@@ -1,0 +1,49 @@
+[tool.poetry]
+authors = ["Vagiz Duseev <vagiz.duseev@dynatrace.com>"]
+description = "Database load generator."
+documentation = "https://db-load-generator.readthedocs.io"
+homepage = "https://github.com/dynatrace-oss/db-load-generator"
+keywords = ["database", "load", "bench", "generator"]
+license = "Apache-2.0"
+maintainers = ["Vagiz Duseev <vagiz.duseev@dynatrace.com>"]
+name = "db-load-generator"
+packages = [
+  {include = "dbload"},
+]
+readme = "README.md"
+repository = "https://github.com/dynatrace-oss/db-load-generator"
+version = "0.1.0"
+
+[tool.poetry.scripts]
+dbload = "dbload.cli:main"
+
+[tool.poetry.dependencies]
+Faker = "^8.1.2"
+JPype1 = "^1.2.0"
+click = "^7.1.2"
+ilexconf = "^0.9.6"
+loguru = "^0.5.3"
+mapz = "^1.1.28"
+prettytable = "^2.1.0"
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+Sphinx = "^3.5.3"
+black = "^20.8b1"
+debugpy = "^1.2.1"
+dramatiq = {extras = ["rabbitmq", "watch"], version = "^1.10.0"}
+ipython = "^7.19.0"
+jedi = "0.17.2"
+pydata-sphinx-theme = "^0.5.2"
+pytest = "^6.2.3"
+pytest-cov = "^2.11.1"
+pytest-mock = "^3.6.0"
+sphinxcontrib-programoutput = "^0.17"
+
+[tool.black]
+extend-exclude = "step_*"
+line-length = 78
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]

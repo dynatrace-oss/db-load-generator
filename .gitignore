@@ -1,0 +1,29 @@
+# VS Code
+.vscode/
+
+# Python
+__pycache__
+
+# Tests
+.pytest_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+
+# Docs
+*.db
+
+# Builds
+dist/
+docs/_build/
+
+# JS
+node_modules
+build
+
+# Common
+.DS_Store
+
+# Development
+demo/
+deployment/

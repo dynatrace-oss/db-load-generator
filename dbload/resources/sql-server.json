@@ -1,0 +1,17 @@
+{
+    "classpath": [
+        "mssql-jdbc-8.4.1.jre8.jar"
+    ],
+    "driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+    "dsn": "jdbc:sqlserver://ec2-18-209-238-177.compute-1.amazonaws.com:1433",
+    "driver_arg": {
+        "databaseName": "master",
+        "user": "sa",
+        "password": "StrongPassword!"
+    },
+    "sql": [
+        "sql-server.sql"
+    ],
+    "module": "default.py",
+    "ignore": true
+}

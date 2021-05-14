@@ -1,0 +1,9 @@
+{
+    "dsn": "jdbc:sqlite:_build/sample.db",
+    "classpath": [
+        "tutorial/sqlite-jdbc-3.34.0.jar"
+    ],
+    "sql": [
+        "tutorial/full.sql"
+    ]
+}
