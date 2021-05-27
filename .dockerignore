@@ -1,0 +1,24 @@
+# Docker
+Dockerfile
+.dockerignore
+data/
+
+# Git
+.git
+.gitignore
+
+# GitHub
+.github/
+
+# VS Code
+.vscode/
+
+# Python
+__pycache__
+dist/
+dist/
+htmlcov/
+docs/
+
+# Terraform
+terraform/

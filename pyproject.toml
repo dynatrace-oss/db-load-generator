@@ -39,6 +39,8 @@ pytest = "^6.2.3"
 pytest-cov = "^2.11.1"
 pytest-mock = "^3.6.0"
 sphinxcontrib-programoutput = "^0.17"
+pytest-mypy = "^0.8.1"
+mypy = "^0.812"
 
 [tool.black]
 extend-exclude = "step_*"

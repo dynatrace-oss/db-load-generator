@@ -12,6 +12,7 @@ htmlcov/
 
 # Docs
 *.db
+*.jar
 
 # Builds
 dist/
@@ -27,3 +28,4 @@ build
 # Development
 demo/
 deployment/
+.secrets

@@ -1,0 +1,290 @@
+name: Build Test Release
+on:
+  # Pull request trigger only for PRs into main branch
+  pull_request:
+    branches:
+      - main
+    paths:
+  push:
+    # Push only works for tags.
+    # Will be executed on push or successful merge into main.
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+
+  #----------------------------------------
+  #
+  # Builds docker image and tags it with Commit SHA.
+  # Pushes the image to GitHub image registry.
+  #
+  # This docker image is essential for all other steps. It is used
+  # for testing, building, publishing, etc.
+  #
+  #----------------------------------------
+
+  build-docker-image:
+    name: Build docker image
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Authenticate in GitHub docker registry
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+
+      - name: Pull latest cached docker image
+        run: |
+          docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:latest || true
+
+      - name: Build docker image
+        run: |
+          docker build \
+            --tag docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6} \
+            --cache-from docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:latest \
+            .
+
+      - name: Push image to GitHub docker registry
+        run: |
+          docker push docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6}
+
+  #----------------------------------------
+  #
+  # Releases image as official development image by tagging
+  # it as "latest".
+  #
+  # Only happens when PR is merged into main or when something is pushed
+  # into main branch.
+  #
+  #----------------------------------------
+
+  release-docker-image:
+    name: Release docker image
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))
+    runs-on: ubuntu-latest
+    needs:
+      - build-docker-image
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Authenticate in GitHub docker registry
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+
+      - name: Pull latest cached docker image
+        run: |
+          docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6}
+
+      - name: Tag and push image with "latest" tag
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker tag \
+            docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6} \
+            docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:latest
+
+          docker push docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:latest
+
+      - name: Tag and push image with git tag
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          docker tag \
+            docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6} \
+            docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_REF#refs/tags/}
+
+          docker push docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_REF#refs/tags/}
+
+  #----------------------------------------
+  #
+  # Runs all tests using development image.
+  # - pytest:   tests
+  # - mypy:     typing
+  # - flake8:   linter
+  # - coverage: test coverage %
+  #
+  #----------------------------------------
+
+  run-tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    needs:
+      - build-docker-image
+
+    steps:
+      - name: Authenticate in GitHub docker registry
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+
+      - name: Pull latest cached docker image
+        run: |
+          docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6}
+
+      - name: Run pytest tests
+        run: |
+          docker run \
+            docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6} \
+            poetry run pytest
+
+      - name: Run mypy tests
+        run: |
+          docker run \
+            docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6} \
+            poetry run pytest --mypy dbload --strict || true
+
+      - name: Run flake8 lint checker
+        run: |
+          docker run \
+            docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6} \
+            poetry run flake8 || true
+
+      - name: Run test coverage report
+        run: |
+          docker run \
+            docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6} \
+            poetry run pytest --cov . --cov-report html || true
+
+  #----------------------------------------
+  #
+  # Builds python package using poetry.
+  #
+  #----------------------------------------
+
+  build-package:
+    name: Build package
+    runs-on: ubuntu-latest
+    needs:
+      - run-tests
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Authenticate in GitHub docker registry
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+
+      - name: Pull latest cached docker image
+        run: |
+          docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6}
+
+      - name: Build package
+        run: |
+          docker run \
+            -v "$(pwd):/app" \
+            docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6} \
+            poetry build
+
+      - name: Cache built package artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: package
+          path: |
+            dist/*
+
+  #----------------------------------------
+  #
+  # Creates GitHub release with binaries and packages.
+  #
+  # Only happens for tags.
+  #
+  #----------------------------------------
+
+  github-release:
+    name: Create GitHub release
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    needs:
+      - build-package
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Authenticate in GitHub docker registry
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+
+      - name: Pull latest cached docker image
+        run: |
+          docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6}
+
+      - name: Build package
+        run: |
+          docker run \
+            -v "$(pwd):/app" \
+            docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6} \
+            poetry build
+
+      - name: Generate changelog
+        run: |
+          cat > CHANGELOG.md <<EOT
+          ## CHANGELOG
+
+          **Release**: db-load-generator (${GITHUB_REF#refs/tags/})
+
+          ### Changes
+
+          EOT
+
+          git log --format=format:"%s" >> CHANGELOG.md
+          echo "" >> CHANGELOG.md
+
+          cat CHANGELOG.md
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/*
+            LICENSE
+          body_path: CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  #----------------------------------------
+  #
+  # Publishes built package to PyPI
+  #
+  #----------------------------------------
+
+  publish-to-pypi:
+    name: Publish to PyPI
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    needs:
+      - build-package
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Authenticate in GitHub docker registry
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+
+      - name: Pull latest cached docker image
+        run: |
+          docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6}
+
+      - name: Authenticate in GitHub docker registry
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+
+      - name: Pull latest cached docker image
+        run: |
+          docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6}
+
+      - name: Build package
+        run: |
+          docker run \
+            -v "$(pwd):/app" \
+            docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6} \
+            poetry build
+
+      - name: Publish to PyPI
+        env:
+          PYPI_TOKEN: "${{ secrets.PYPI_TOKEN }}"
+        run: |
+          docker run \
+            -v "$(pwd):/app" \
+            docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:${GITHUB_SHA:0:6} \
+            poetry publish --username __token__ --password "$PYPI_TOKEN"
