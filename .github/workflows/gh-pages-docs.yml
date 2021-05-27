@@ -1,4 +1,4 @@
-name: docs
+name: Build Docs
 on:
   push:
     branches:
@@ -22,6 +22,13 @@ jobs:
       - name: Pull latest cached docker image
         run: |
           docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/db-load-generator:latest
+
+      - name: Download SQLite driver JAR binary for tutorial section of docs
+        env:
+          SOURCE_URL: https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.34.0
+          FILENAME: sqlite-jdbc-3.34.0.jar
+        run: |
+          curl -sL "${SOURCE_URL}/${FILENAME}" > "docs/${FILENAME}"
 
       - name: Build the docs
         run: |
@@ -48,10 +55,6 @@ jobs:
         with:
           name: rendered-docs
 
-      - name: List files
-        run: |
-          ls -R
-
       - name: Change Git username for gh-pages branch
         run: |
           git config --global user.name "${GITHUB_ACTOR}"
@@ -65,10 +68,12 @@ jobs:
 
       - name: Add README disclaimer
         run: |
-          echo "# GitHub Pages for `db-load-generator`\n" >> README.md
-          echo "The contents of this branch are built using GitHub Actions workflow and Sphinx.\n" >> README.md
+          echo '# GitHub Pages for `db-load-generator`' > README.md
+          echo "" >> README.md
+          echo "The contents of this branch are built using GitHub Actions workflow and Sphinx." >> README.md
+          echo "" >> README.md
           echo "See built docs at [dbload.org](https://dbload.org)\n" >> README.md
-          echo "*commit ${GITHUB_SHA:0:6}*"
+          echo "*commit ${GITHUB_SHA:0:6}*" >> README.md
 
       - name: Add .nojekyll file to prevent the contents from being built by GitHub pages second time
         run: |

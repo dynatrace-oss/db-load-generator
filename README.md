@@ -5,17 +5,20 @@ It uses Java and JDBC drivers to connect to the databases.
 
 <p>
     <a href="https://pypi.org/project/db-load-generator/"><img alt="PyPI" src="https://img.shields.io/pypi/v/db-load-generator?color=blue&logo=pypi"></a>
-    <a href='https://db-load-generator.readthedocs.io/en/latest/?badge=latest'><img src='https://readthedocs.org/projects/db-load-generator/badge/?version=latest' alt='Documentation Status' /></a>
-    <a href="https://pypi.org/project/db-load-generator/"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/db-load-generator"></a>
+    <a href="https://pypi.org/project/db-load-generator/"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/db-load-generator?color=blue&logo=pypi"></a>
+    <a href="https://github.com/dynatrace-oss/db-load-generator/actions/workflows/build-test-release.yml"><img alt="Build Status" src="https://img.shields.io/github/workflow/status/dynatrace-oss/db-load-generator/Build%20Test%20Release?logo=github" /></a>
+    <a href="https://dbload.org"><img src="https://img.shields.io/github/workflow/status/dynatrace-oss/db-load-generator/Build%20Docs?label=docs&logo=github" alt="Documentation Build Status" /></a>
+    <a href="https://github.com/dynatrace-oss/db-load-generator/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/dynatrace-oss/db-load-generator"></a>
 </p>
 
 ## Getting Started
 
-New to `db-load-generator`? Checkout official [getting started](https://db-load-generator.readthedocs.io/) guide.
+New to `db-load-generator`? Checkout our official [Getting Started](https://db-load-generator.readthedocs.io/) guide.
 
 ## Development & Contributions
 
-If you are interested in contributing to the project please our [Code of Conduct](CODE_OF_CONDUCT.md).
+Contributions are welcome!
+If you are interested in contributing to the project please read our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 
