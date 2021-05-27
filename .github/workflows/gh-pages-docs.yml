@@ -72,7 +72,8 @@ jobs:
           echo "" >> README.md
           echo "The contents of this branch are built using GitHub Actions workflow and Sphinx." >> README.md
           echo "" >> README.md
-          echo "See built docs at [dbload.org](https://dbload.org)\n" >> README.md
+          echo "See built docs at [dbload.org](https://dbload.org)" >> README.md
+          echo "" >> README.md
           echo "*commit ${GITHUB_SHA:0:6}*" >> README.md
 
       - name: Add .nojekyll file to prevent the contents from being built by GitHub pages second time

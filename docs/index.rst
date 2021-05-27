@@ -8,8 +8,10 @@ It uses Java and JDBC drivers to connect to the databases. And comes with a comm
 
    <p>
       <a href="https://pypi.org/project/db-load-generator/"><img alt="PyPI" src="https://img.shields.io/pypi/v/db-load-generator?color=blue&logo=pypi"></a>
-      <a href='https://db-load-generator.readthedocs.io/en/latest/?badge=latest'><img src='https://readthedocs.org/projects/db-load-generator/badge/?version=latest' alt='Documentation Status' /></a>
-      <a href="https://pypi.org/project/db-load-generator/"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/db-load-generator"></a>
+      <a href="https://pypi.org/project/db-load-generator/"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/db-load-generator?color=blue&logo=pypi"></a>
+      <a href="https://github.com/dynatrace-oss/db-load-generator/actions/workflows/build-test-release.yml"><img alt="Build Status" src="https://img.shields.io/github/workflow/status/dynatrace-oss/db-load-generator/Build%20Test%20Release?logo=github" /></a>
+      <a href="https://dbload.org"><img src="https://img.shields.io/github/workflow/status/dynatrace-oss/db-load-generator/Build%20Docs?label=docs&logo=github" alt="Documentation Build Status" /></a>
+      <a href="https://github.com/dynatrace-oss/db-load-generator/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/dynatrace-oss/db-load-generator"></a>
    </p>
 
 **What db-load-generator can do**
@@ -35,6 +37,11 @@ It uses Java and JDBC drivers to connect to the databases. And comes with a comm
 
 Getting Started
 ---------------
+
+.. admonition:: Dynamic documentation
+   :class: hint
+
+   All code, command samples, and outputs below are dynamically generated during documentation build process using the latest version of ``db-load-generator``.
 
 Basic setup
 ^^^^^^^^^^^
