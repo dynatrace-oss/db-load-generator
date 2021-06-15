@@ -21,15 +21,10 @@ jobs:
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
 
-      - name: Pull latest cached docker image
-        run: |
-          docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/dbload:latest || true
-
       - name: Build docker image
         run: |
           docker build \
             --tag docker.pkg.github.com/$GITHUB_REPOSITORY/dbload:latest \
-            --cache-from docker.pkg.github.com/$GITHUB_REPOSITORY/dbload:latest \
             .
 
       - name: Push image to GitHub docker registry
