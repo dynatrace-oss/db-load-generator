@@ -311,6 +311,7 @@ jobs:
       - name: Build docker image
         run: |
           docker build \
+            --tag docker.pkg.github.com/$GITHUB_REPOSITORY/dbload:latest \
             --cache-from docker.pkg.github.com/$GITHUB_REPOSITORY/dbload:latest \
             .
 
