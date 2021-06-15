@@ -46,6 +46,6 @@ def sources():
     # 20 queries
     # 4 of them = return_random
     source = ""
-    with resources.open_text("dbload.resources", "sql-server.sql") as f:
+    with resources.open_text("dbload.resources", "ms-sql.sql") as f:
         source = f.read()
     return [source]

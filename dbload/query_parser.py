@@ -81,6 +81,8 @@ class QueryParser:
         # current_query_kind = None
         current_query_content = ""
 
+        collected = Mapz()
+
         lines = source.split("\n")
         for line in lines:
             line = line.strip("\n").replace("\t", " ").replace("\r", "")
@@ -92,7 +94,7 @@ class QueryParser:
 
                     # If we have a current query name, then append new content to it
                     if current_query_name:
-                        parsed[
+                        collected[
                             current_query_name
                         ].text = current_query_content
                         current_query_content = ""
@@ -112,7 +114,7 @@ class QueryParser:
                     current_query_name = nm.group(1)
                     current_query_content = ""
 
-                    parsed[current_query_name] = Mapz(
+                    collected[current_query_name] = Mapz(
                         # kind=current_query_kind,
                         options=options,
                         scenarios=scenarios,
@@ -123,4 +125,12 @@ class QueryParser:
                 current_query_content += line
 
         # Add last "unseparrated" query to list
-        parsed[current_query_name].text = current_query_content
+        collected[current_query_name].text = current_query_content
+
+        # Remove queries without `text`.
+        # Happens when you comment out the whole half of the queries file
+        # in IDE and `-- name:` comment gets parsed but the text contains
+        # nothing due to it being fully commented out
+        for k, v in collected.items():
+            if v.text:
+                parsed[k] = v

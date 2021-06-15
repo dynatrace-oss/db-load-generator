@@ -15,6 +15,37 @@ It uses Java and JDBC drivers to connect to the databases.
 
 New to `db-load-generator`? Checkout our official [Getting Started](https://db-load-generator.readthedocs.io/) guide.
 
+
+## Requirements
+
+* Python 3.9 or above.
+* Java 8 or above.
+* JDBC driver for your database.
+
+## Features
+
+* Test connection to the database using `dbload test`
+* Execute a query using `dbload execute`
+* Configure db-load-generator via
+  * command line arguments
+  * environment variables
+  * default config file `dbload.json`
+  * custom path config file
+* Print current parsed configuration using `dbload show settings`
+* Use decorators from `dbload` library to create scenarios and queries
+* Write annotated SQL queries in the `.sql` file and feed them using `dbload --sql myfile.sql`
+* Show current parsed queries using `dbload show queries`
+* Run any defined query using `dbload query`
+* Write full-fledged complex simulation scenarios using `dbload` library
+* Show current parsed scenarios using `dbload show scenarios`
+* Run any defined scenarios using `dbload scenario`
+* Use predefined simulations for popular databases using `dbload --predefined <db-name> ACTION`
+* Run db-load-generator as a background worker using [dramatiq](https://dramatiq.io)
+  * ensure there is a RabbitMQ running as a message broker
+  * runs scenarios as service workers `dbload worker`
+  * enqueue executions into broker using `dbload send <scenario name or actor name>`
+  * start beats/scheduler process using `dbload scheduler`
+
 ## Development & Contributions
 
 Contributions are welcome!

@@ -17,10 +17,15 @@ version = "0.1.0"
 [tool.poetry.scripts]
 dbload = "dbload.cli:main"
 
+[tool.poetry.extras]
+dramatiq = ["dramatiq", "apscheduler"]
+
 [tool.poetry.dependencies]
+APScheduler = {version = "^3.7.0", optional = true}
 Faker = "^8.1.2"
 JPype1 = "^1.2.0"
 click = "^7.1.2"
+dramatiq = {extras = ["rabbitmq"], version = "^1.11.0", optional = true}
 ilexconf = "^0.9.6"
 loguru = "^0.5.3"
 mapz = "^1.1.28"
@@ -34,13 +39,13 @@ debugpy = "^1.2.1"
 dramatiq = {extras = ["rabbitmq", "watch"], version = "^1.10.0"}
 ipython = "^7.19.0"
 jedi = "0.17.2"
+mypy = "^0.812"
 pydata-sphinx-theme = "^0.5.2"
 pytest = "^6.2.3"
 pytest-cov = "^2.11.1"
 pytest-mock = "^3.6.0"
-sphinxcontrib-programoutput = "^0.17"
 pytest-mypy = "^0.8.1"
-mypy = "^0.812"
+sphinxcontrib-programoutput = "^0.17"
 
 [tool.black]
 extend-exclude = "step_*"

@@ -1,0 +1,16 @@
+{
+    "classpath": [
+        "ngdbc-2.7.15.jar"
+    ],
+    "dsn": "jdbc:sap://localhost:39041/",
+    "driver": "com.sap.db.jdbc.Driver",
+    "driver_arg": {
+        "databaseName": "HXE",
+        "user": "SYSTEM",
+        "password": "HXEHana1"
+    },
+    "predefined": "sap-hana",
+    "schedule": {
+        "create_sale": "* * * * *"
+    }
+}

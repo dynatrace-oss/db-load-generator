@@ -1,22 +1,24 @@
 # VS Code
-.vscode/
+.vscode
 
 # Python
 __pycache__
 
 # Tests
-.pytest_cache/
-.mypy_cache/
+.pytest_cache
+.mypy_cache
 htmlcov/
 .coverage
 
 # Docs
 *.db
+
+# Drivers
 *.jar
 
 # Builds
-dist/
-docs/_build/
+dist
+docs/_build
 
 # JS
 node_modules
@@ -26,6 +28,4 @@ build
 .DS_Store
 
 # Development
-demo/
-deployment/
 .secrets

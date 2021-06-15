@@ -14,7 +14,7 @@
 
 import sys
 from pathlib import Path
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Sequence
 
 from loguru import logger
 import ilexconf
@@ -43,18 +43,28 @@ class Config(ilexconf.Config):
         verbose=0,
         # Be quiet, do not print non-error results in CLI
         quiet=False,
+        # Name of predefined simmulation for supported DB
+        predefined=None,
+        # Predefined simulations
+        predefined_simulations=["sap-hana"],
+        # Schedule for APScheduler
+        schedule=None
     )
 
-    def __init__(self, cli_args: Dict = {}):
-        config_path = Path("dbload.json")
+    def __init__(self, cli_args):
 
+        non_empty_cli_args = {}
+        for k in cli_args:
+            # Only take non empty CLI arguments
+            if cli_args[k]:
+                non_empty_cli_args[k] = cli_args[k]
+
+        config_path = Path("dbload.json")
         is_different_config_path = False
-        if "config" in cli_args:
-            config_path_arg = cli_args.pop("config")
+        if "config" in non_empty_cli_args:
+            config_path_arg = non_empty_cli_args.pop("config")
             config_path = Path(config_path_arg)
             is_different_config_path = True
-
-        env = ilexconf.from_env(prefix="DBLOAD_")
         cfg = ilexconf.from_json(config_path, ignore_errors=True)
 
         # Adjust paths in case config file was loaded from a different
@@ -81,11 +91,13 @@ class Config(ilexconf.Config):
                 if not m_instance.is_absolute():
                     cfg.module = str(config_path_parent / m_instance)
 
+        env = ilexconf.from_env(prefix="DBLOAD_")
+
         super().__init__(
             self.defaults,
             cfg,
             env,
-            cli_args,
+            non_empty_cli_args,
         )
 
         # Set verbosity
@@ -96,6 +108,23 @@ class Config(ilexconf.Config):
         logger.add(sys.stderr, level=level)
 
         self.sources = self._read_files(self.sql)
+
+        # Parse driver args, if present
+        if self.driver_arg and isinstance(self.driver_arg, Sequence):
+            driver_args_list = []
+            driver_args_dict = {}
+
+            for arg in self.driver_arg:
+                if "=" in arg:
+                    key, value = arg.split("=")
+                    driver_args_dict[key] = value
+                else:
+                    driver_args_list.append(arg)
+
+            if driver_args_dict:
+                self.driver_arg = driver_args_dict
+            else:
+                self.driver_arg = driver_args_list
 
     @staticmethod
     def _read_files(sql_files: List[Union[str, Path]]) -> List[str]:

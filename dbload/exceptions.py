@@ -164,3 +164,31 @@ class ScenarioAlreadyExistsError(RuntimeError):
         super().__init__(
             f"Attempting to register scenario that already exists in the context: '{registration_name}'."
         )
+
+
+class UnsupportedPredefinedSimulationError(RuntimeError):
+    """Attempting to load predefined simulation that does not exit."""
+
+    def __init__(self, simulation_name) -> None:
+        super().__init__(f"Attempting to load predefined simulation '{simulation_name}' that does not exist.")
+
+
+class ImportlibResourcesNotFoundError(RuntimeError):
+    """Required module importlib.resources or importlib_resources not found."""
+
+    def __init__(self) -> None:
+        super().__init__("Neither importlib.resources not importlib_resources module is found.")
+
+
+class PredefinedSimulationImportError(RuntimeError):
+    """Could not import predefined simulation."""
+
+    def __init__(self) -> None:
+        super().__init__("Could not import predefined simulation")
+
+
+class EmptyPathToModuleError(RuntimeError):
+    """Empty path to module with scenarios is provided."""
+
+    def __init__(self, path: Path) -> None:
+        super().__init__(f"Empty path to module is provided: {path}.")

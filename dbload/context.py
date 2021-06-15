@@ -13,6 +13,9 @@
 # limitations under the License.
 
 from collections import defaultdict
+from pathlib import Path
+import sys
+import importlib
 from types import FunctionType
 from typing import List, Optional
 
@@ -22,9 +25,13 @@ from mapz import Mapz
 from .config_singleton import get_config
 from .query_parser import QueryParser
 from .exceptions import (
+    EmptyPathToModuleError,
+    ImportlibResourcesNotFoundError,
+    PredefinedSimulationImportError,
     QueryAlreadyExistsError,
     ScenarioAlreadyExistsError,
     MatchingSqlQueryNotFoundError,
+    UnsupportedPredefinedSimulationError,
 )
 
 
@@ -109,10 +116,22 @@ class Context:
             logger.debug("Infusing context.")
 
         cfg = get_config()
+        # headers, rows = cfg.to_table()
+        # from prettytable import PrettyTable
+        # pt = PrettyTable(headers)
+        # pt.add_rows(rows)
+        # pt.align = "l"
+        # print(pt)
+
+        if cfg.predefined:
+            self._load_predefined_simulation()
+        elif cfg.module:
+            self._load_requested_module(cfg.module)
+
         parsed = QueryParser.parse(cfg.sources)
 
-        self._implicit_query(parsed)
-        self._implicit_scenario(parsed)
+        self._create_implicit_queries(parsed)
+        self._create_implicit_scenarios(parsed)
 
         for q in self.queries:
             self._infuse_query_with_matching_sql(parsed, q)
@@ -122,7 +141,47 @@ class Context:
 
         self._is_infused = True
 
-    def _implicit_query(self, parsed: Mapz):
+    def _load_predefined_simulation(self):
+        cfg = get_config()
+
+        if cfg.predefined not in cfg.predefined_simulations:
+            raise UnsupportedPredefinedSimulationError(cfg.predefined)
+
+        # Import helper modules
+        try:
+            import importlib.resources as pkg_resources
+        except ImportError:
+            try:
+                import importlib_resources as pkg_resources
+            except:
+                raise ImportlibResourcesNotFoundError() from None
+
+        try:
+            # SQL queries file gets imported from resources
+            from dbload import resources
+            sql_source = pkg_resources.read_text(resources, f"{cfg.predefined}.sql")
+            cfg.sources = [sql_source]  # Override any read sources
+            # and the scenario file is imported from there as well
+            from dbload.resources import scenarios
+        except:
+            raise PredefinedSimulationImportError() from None
+
+    def _load_requested_module(self, path: str) -> None:
+        path = Path(path)
+
+        if len(path.parts) == 0:
+            raise EmptyPathToModuleError(path)
+
+        modname = None
+        if len(path.parts) > 1:
+            parent_path = str(path.parent)
+            sys.path.insert(0, parent_path)
+            modname = path.stem
+        else:
+            modname = path.stem
+            importlib.import_module(modname)
+
+    def _create_implicit_queries(self, parsed: Mapz):
         """Create pre-requested queries.
 
         Generate queries based on the annotated sql statements from the
@@ -160,7 +219,7 @@ class Context:
                             f"Unrecognized option in SQL query: {option}"
                         )
 
-    def _implicit_scenario(self, parsed: Mapz):
+    def _create_implicit_scenarios(self, parsed: Mapz):
         """Create pre-requested scenarios.
 
         Generate scenarios based on the "scenario" keyword in query
@@ -233,6 +292,7 @@ class Context:
 
     def _infuse_scenario_with_queries(self, scenario_name: str):
         if self.scenarios[scenario_name].infuse:
+            logger.info(f"Infusing {scenario_name} with queries")
             for query_name, q in self.queries.items():
                 setattr(
                     self.scenarios[scenario_name].function,

@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  db:
+    image: store/saplabs/hanaexpress:2.00.045.00.20200121.1
+    hostname: c4ec55750717
+    ports:
+      - "39013:39013"
+      - "39017:39017"
+      - "39041-39045:39041-39045"
+      - "1128-1129:1128-1129"
+      - "59013-59014:59013-59014"
+    volumes:
+      - "./data:/hana/mounts"
+      - "./password.json:/hana/hxeconfig/password.json"
+    restart: always
+    command:
+      - --agree-to-sap-license
+      - --dont-check-system
+      - --passwords-url
+      - file:///hana/hxeconfig/password.json
+    networks:
+      - sap_hana
+
+  rabbitmq:
+    image: rabbitmq:latest
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+    networks:
+      - sap_hana
+
+networks:
+  sap_hana:
