@@ -45,8 +45,8 @@ pydata-sphinx-theme = "^0.5.2"
 pytest = "^6.2.3"
 pytest-cov = "^2.11.1"
 pytest-mock = "^3.6.0"
-pytest-mypy = "^0.8.2"
 sphinxcontrib-programoutput = "^0.17"
+pytest-mypy = "^0.8.1"
 
 [tool.black]
 extend-exclude = "step_*"
