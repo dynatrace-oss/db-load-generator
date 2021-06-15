@@ -1,36 +1,13 @@
-FROM fedora:latest as base
+FROM python:latest AS base
 
-RUN dnf install -y \
-    which \
-    make \
-    automake \
-    gcc \
-    gcc-c++ \
-    kernel-devel \
-    python3-devel \
-    poetry \
-    java-1.8.0-openjdk.x86_64
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends openjdk-11-jre-headless \
+    && apt-get purge -y --auto-remove \
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install db-load-generator[dramatiq]
 
-WORKDIR /app
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 
-COPY . .
+WORKDIR /dbload
 
-RUN poetry install
-
-RUN echo "export JAVA_HOME=$(dirname $(dirname $(dirname $(readlink $(readlink $(which java))))))" >> ~/.bashrc
-
-# RUN dnf remove -y \
-#     which \
-#     make \
-#     automake \
-#     gcc \
-#     gcc-c++ \
-#     kernel-devel \
-#     python3-devel \
-#     && dnf autoremove -y
-
-# RUN rm -rf /var/cache/dnf \
-#     && rm -rf /var/lib/rpm \
-#     rm -rf /var/lib/dnf
-
-CMD [ "poetry", "run", "dbload", "--help" ]
+ENTRYPOINT [ "dbload" ]

@@ -25,6 +25,7 @@ from .context_singleton import get_context
 from .config_singleton import get_config
 from .connection import get_connection
 from .query_result import QueryResult
+from . import __version__
 
 
 # Global CLI context for nested command line args
@@ -101,21 +102,23 @@ def update_cli_args(kwargs) -> None:
 
 
 def decorate_with_common_options(f):
-    f = click.option("-C", "--config", help="Path to the config file.", type=click.Path(exists=True, dir_okay=False))(f)
-    f = click.option("-m", "--module", help="Path python module with scenarios to import.", type=str)(f)
-    f = click.option("-d", "--dsn", help="The database connection string for JDBC.", type=str)(f)
-    f = click.option("-a", "--driver-arg", help="Arguments to the driver. Can be key=value pairs or just values.", multiple=True, type=str)(f)
-    f = click.option("-s", "--sql", help="Paths to files with SQL queries.", multiple=True, type=click.Path(exists=True, dir_okay=False, readable=True))(f)
-    f = click.option("-i", "--ignore", help="Ignore errors during query executions.", is_flag=True)(f)
-    f = click.option("-c", "--classpath", help="Paths to libraries, including JDBC 4.0 database driver. Can include wildcard.", multiple=True, type=click.Path(exists=True))(f)
-    f = click.option("-D", "--driver", help="Driver class name to instantiate (example: com.ibm.db2.jcc.DB2Jcc).", type=str)(f)
+    f = click.version_option(__version__)(f)
     f = click.option("-v", "--verbose", help="Log verbosity: 3 levels from error (default) to debug. Stack them up: -vvv to get debug.", count=True)(f)
     f = click.option("-q", "--quiet", help="Do not print any results. Errors are still printed.", is_flag=True)(f)
     f = click.option("-p", "--predefined", help="Name of the predefined simulation for one of the supported databases.", type=str)(f)
+    f = click.option("-D", "--driver", help="Driver class name to instantiate (example: com.ibm.db2.jcc.DB2Jcc).", type=str)(f)
+    f = click.option("-c", "--classpath", help="Paths to libraries, including JDBC 4.0 database driver. Can include wildcard.", multiple=True, type=click.Path(exists=True))(f)
+    f = click.option("-i", "--ignore", help="Ignore errors during query executions.", is_flag=True)(f)
+    f = click.option("-s", "--sql", help="Paths to files with SQL queries.", multiple=True, type=click.Path(exists=True, dir_okay=False, readable=True))(f)
+    f = click.option("-a", "--driver-arg", help="Arguments to the driver. Can be key=value pairs or just values.", multiple=True, type=str)(f)
+    f = click.option("-d", "--dsn", help="The database connection string for JDBC.", type=str)(f)
+    f = click.option("-m", "--module", help="Path python module with scenarios to import.", type=str)(f)
+    f = click.option("-C", "--config", help="Path to the config file.", type=click.Path(exists=True, dir_okay=False))(f)
     return f
 
 
 @click.group()
+@click.version_option(__version__)
 @decorate_with_common_options
 def main(**kwargs):
     update_cli_args(kwargs)
@@ -454,6 +457,11 @@ def worker(**kwargs):
     except ImportError:
         click.echo("Cannot launch worker because dramatiq cannot be imported", err=True)
         sys.exit(1)
+
+
+@main.command(help="Display version of dbload")
+def version():
+    click.echo(f"{__version__}")
 
 
 if __name__ == "__main__":
