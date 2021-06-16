@@ -48,7 +48,10 @@ class Config(ilexconf.Config):
         # Predefined simulations
         predefined_simulations=["sap-hana"],
         # Schedule for APScheduler
-        schedule=None
+        schedule=None,
+        # RabbitMQ connection parameters
+        broker_host="localhost",
+        broker_port="5672",
     )
 
     def __init__(self, cli_args):

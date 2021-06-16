@@ -38,7 +38,7 @@
 1. Launch dbload worker process in a separate terminal window
 
    ```shell
-   dbload worker --predefined sap-hana --process 1 --thread 1
+   dbload worker --predefined sap-hana --processes 1 --threads 1
    ```
 
 1. Launch dbload scheduler process in another terminal window.

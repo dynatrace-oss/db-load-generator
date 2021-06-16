@@ -301,8 +301,16 @@ def send(actor_name, **kwargs):
     ctx.infuse()
 
     try:
-        from dramatiq import get_broker, actor as register_actor
-        broker = get_broker()
+        from dramatiq import set_broker, actor as register_actor
+        from dramatiq.brokers.rabbitmq import RabbitmqBroker
+
+        broker = RabbitmqBroker(
+            host=config.broker_host,
+            port=config.broker_port,
+            heartbeat=5,
+            blocked_connection_timeout=60
+        )
+        set_broker(broker)
 
         # Decorate all queries and scenarios as actors
         for query_name in ctx.queries:
@@ -339,9 +347,18 @@ def scheduler(actor_name, cron, **kwargs):
     ctx.infuse()
 
     try:
-        from dramatiq import get_broker, actor as register_actor
+        from dramatiq import set_broker, actor as register_actor
+        from dramatiq.brokers.rabbitmq import RabbitmqBroker
         from apscheduler.schedulers.background import BackgroundScheduler
         from apscheduler.triggers.cron import CronTrigger
+
+        broker = RabbitmqBroker(
+            host=config.broker_host,
+            port=config.broker_port,
+            heartbeat=5,
+            blocked_connection_timeout=60
+        )
+        set_broker(broker)
 
         # Decorate all queries and scenarios as actors
         for query_name in ctx.queries:
@@ -351,7 +368,6 @@ def scheduler(actor_name, cron, **kwargs):
 
         # Form a schedule if explicitly requested.
         # Otherwise schedule from config will be used
-        broker = get_broker()
         actors = broker.get_declared_actors()
         if actor_name in actors:
             cron = cron or "* * * * *"
@@ -426,12 +442,7 @@ def worker(**kwargs):
     config = get_config(cli_args)
 
     try:
-        from dramatiq import get_broker, actor as register_actor
         from dramatiq.cli import main as dramatiq_main, CPUS
-        # from dramatiq.brokers.rabbitmq import RabbitmqBroker
-
-        # broker = RabbitmqBroker(host="localhost", port="5672", heartbeat=5, blocked_connection_timeout=60)
-        # dramatiq.set_broker(broker)
 
         if dramatiq_args.processes is None:
             dramatiq_args.processes = CPUS
