@@ -150,7 +150,7 @@ def scenario(scenario_name, **kwargs):
 @main.command(help="Execute a query.")
 @click.argument("query_name", metavar="QUERY")
 @click.option("-l", "--limit", help="Limit the number of rows displayed in the resulting tables.", type=int)
-@click.option("-p", "--property", help="Property for the prepared statement.", multiple=True)
+@click.option("-P", "--property", help="Property for the prepared statement.", multiple=True)
 @decorate_with_common_options
 def query(query_name, limit, property, **kwargs):
     update_cli_args(kwargs)
@@ -185,7 +185,7 @@ def query(query_name, limit, property, **kwargs):
 @main.command(help="Execute arbitrary SQL statement.")
 @click.argument("statement")
 @click.option("-l", "--limit", help="Limit the number of rows displayed in the resulting tables.", type=int)
-@click.option("-p", "--property", help="Property for the prepared statement.", multiple=True)
+@click.option("-P", "--property", help="Property for the prepared statement.", multiple=True)
 @decorate_with_common_options
 def execute(statement, limit, property, **kwargs):
     update_cli_args(kwargs)
