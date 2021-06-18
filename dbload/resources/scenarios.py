@@ -144,12 +144,7 @@ try:
     from dbload import get_config
 
     config = get_config()
-    broker = RabbitmqBroker(
-        host=config.broker_host,
-        port=config.broker_port,
-        heartbeat=5,
-        blocked_connection_timeout=60
-    )
+    broker = RabbitmqBroker(url=config.broker_url)
     set_broker(broker)
 
     logger.info("Decorating scenarios")

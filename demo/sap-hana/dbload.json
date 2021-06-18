@@ -10,9 +10,11 @@
         "password": "HXEHana1"
     },
     "predefined": "sap-hana",
-    "broker_host": "rabbitmq-cluster",
-    "broker_port": "5672",
+    "broker_url": "amqp://guest:guest@rabbitmq-cluster:5672",
     "schedule": {
+        "update_employee": "*/10 * * * *",
+        "create_client": "*/5 * * * *",
+        "update_client": "*/10 * * * *",
         "create_sale": "* * * * *"
     }
 }

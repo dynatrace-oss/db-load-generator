@@ -163,7 +163,8 @@ class Context:
             cfg.sources = [sql_source]  # Override any read sources
             # and the scenario file is imported from there as well
             from dbload.resources import scenarios
-        except:
+        except Exception as e:
+            logger.error(f"{e}")
             raise PredefinedSimulationImportError() from None
 
     def _load_requested_module(self, path: str) -> None:

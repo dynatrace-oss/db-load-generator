@@ -105,6 +105,7 @@ def decorate_with_common_options(f):
     f = click.version_option(__version__)(f)
     f = click.option("-v", "--verbose", help="Log verbosity: 3 levels from error (default) to debug. Stack them up: -vvv to get debug.", count=True)(f)
     f = click.option("-q", "--quiet", help="Do not print any results. Errors are still printed.", is_flag=True)(f)
+    f = click.option("-b", "--broker-url", help="RabbitMQ broker URL (example: amqp://guest:guest@localhost:5762)", type=str)(f)
     f = click.option("-p", "--predefined", help="Name of the predefined simulation for one of the supported databases.", type=str)(f)
     f = click.option("-D", "--driver", help="Driver class name to instantiate (example: com.ibm.db2.jcc.DB2Jcc).", type=str)(f)
     f = click.option("-c", "--classpath", help="Paths to libraries, including JDBC 4.0 database driver. Can include wildcard.", multiple=True, type=click.Path(exists=True))(f)
@@ -304,12 +305,7 @@ def send(actor_name, **kwargs):
         from dramatiq import set_broker, actor as register_actor
         from dramatiq.brokers.rabbitmq import RabbitmqBroker
 
-        broker = RabbitmqBroker(
-            host=config.broker_host,
-            port=config.broker_port,
-            heartbeat=5,
-            blocked_connection_timeout=60
-        )
+        broker = RabbitmqBroker(url=config.broker_url)
         set_broker(broker)
 
         # Decorate all queries and scenarios as actors
@@ -352,12 +348,7 @@ def scheduler(actor_name, cron, **kwargs):
         from apscheduler.schedulers.background import BackgroundScheduler
         from apscheduler.triggers.cron import CronTrigger
 
-        broker = RabbitmqBroker(
-            host=config.broker_host,
-            port=config.broker_port,
-            heartbeat=5,
-            blocked_connection_timeout=60
-        )
+        broker = RabbitmqBroker(url=config.broker_url)
         set_broker(broker)
 
         # Decorate all queries and scenarios as actors

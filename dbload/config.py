@@ -50,8 +50,7 @@ class Config(ilexconf.Config):
         # Schedule for APScheduler
         schedule=None,
         # RabbitMQ connection parameters
-        broker_host="localhost",
-        broker_port="5672",
+        broker_url="amqp://guest:quest@localhost:5672",
     )
 
     def __init__(self, cli_args):
