@@ -1,0 +1,562 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Usage &#8212; db-load-generator 0.8.6 documentation</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1e043a052b0af929e4d8.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Context" href="../api/context.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+
+    
+      
+      <a class="navbar-brand" href="../index.html">
+        <img src="../_static/db-load-generator.png" class="logo" alt="logo">
+      </a>
+      
+    
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="getting_started.html">
+  Getting Started
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="current reference internal nav-link" href="#">
+  Advanced Usage
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../api/context.html">
+  Context
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../api/query_parser.html">
+  QueryParser
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../api/exceptions.html">
+  Exceptions
+ </a>
+</li>
+
+        
+      </ul>
+
+      <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/dynatrace-oss/db-load-generator" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#scenarios">
+   Scenarios
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#examples-of-scenarios">
+     Examples of scenarios
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#queries">
+   Queries
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#examples-of-queries">
+     Examples of queries
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sql-files">
+   SQL files
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-name-tag">
+     The
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       name:
+      </span>
+     </code>
+     tag
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#comments-without-name-tag">
+     Comments without
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       name:
+      </span>
+     </code>
+     tag
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-scenario-tag">
+     The
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       scenario:
+      </span>
+     </code>
+     tag
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ordered-scenario-30">
+     Ordered
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       scenario[30]
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="advanced-usage">
+<h1>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="scenarios">
+<h2>Scenarios<a class="headerlink" href="#scenarios" title="Permalink to this headline">¶</a></h2>
+<p>This decorator registers a function or a class as a scenario in the
+given <a class="reference internal" href="../api/context.html#dbload.context.Context" title="dbload.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>. Registered scenarios can
+later be invoked and executed by a play or directly.</p>
+<p>When invoked, each scenario gets a <code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code>
+object with an active connection to the database. Scenarios can obtain
+cursors from this object in order to pass them to the executed queries.</p>
+<p>By default, each scenario gets “infused” with all the SQL queries
+from the parsed SQL files. Every parsed query becomes an attribute
+of the scenario object. This is done for the convenience
+purposes and allows you to invoke any parsed SQL query within the
+scenario. In the example below we invoke <code class="docutils literal notranslate"><span class="pre">insert_department</span></code>
+query which was declared in the SQL file:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- name: insert_department</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">DBL_DEPARTMENTS</span> <span class="p">(</span><span class="n">NAME</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>It can be invoked like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@context</span><span class="o">.</span><span class="n">scenario</span>
+<span class="k">def</span> <span class="nf">my_scenario</span><span class="p">(</span><span class="n">connection</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cur</span><span class="p">:</span>
+        <span class="n">my_scenario</span><span class="o">.</span><span class="n">insert_department</span><span class="p">(</span><span class="n">cur</span><span class="p">,</span> <span class="s2">&quot;New Department&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="examples-of-scenarios">
+<h3>Examples of scenarios<a class="headerlink" href="#examples-of-scenarios" title="Permalink to this headline">¶</a></h3>
+<p>Register a function as a scenario in <code class="docutils literal notranslate"><span class="pre">context</span></code> under the name
+“create_users”:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@context</span><span class="o">.</span><span class="n">scenario</span>
+<span class="k">def</span> <span class="nf">create_users</span><span class="p">(</span><span class="n">connection</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Do something&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Register a class as a scenario in <code class="docutils literal notranslate"><span class="pre">context</span></code> under the name
+“createusers”:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@context</span><span class="o">.</span><span class="n">scenario</span>
+<span class="k">class</span> <span class="nc">CreateUsers</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Do something&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Register scenario under a name that differs from the decorated
+object’s name:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@context</span><span class="o">.</span><span class="n">scenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;create_users&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">my_scenario</span><span class="p">(</span><span class="n">connection</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Do something&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a cursor within scenario and use it to manually execute a
+query:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@context</span><span class="o">.</span><span class="n">scenario</span>
+<span class="k">def</span> <span class="nf">create_users</span><span class="p">(</span><span class="n">connection</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cur</span><span class="p">:</span>
+        <span class="n">stmt</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO USERS VALUES (USERS_SEQ.nextval, &#39;Alexander&#39;, &#39;Dortmund&#39;)&quot;</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="queries">
+<h2>Queries<a class="headerlink" href="#queries" title="Permalink to this headline">¶</a></h2>
+<p>When a function decorated by the this decorator is called it gets
+passed two arguments: <code class="docutils literal notranslate"><span class="pre">cursor</span></code> and <code class="docutils literal notranslate"><span class="pre">sql</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">cursor</span></code> is an individual cursor object created by scenario that
+executes this the query function. Cursor object has an <code class="docutils literal notranslate"><span class="pre">execute</span></code>
+method capable of running text queries against connected database.</p>
+<p><code class="docutils literal notranslate"><span class="pre">sql</span></code> is a SQL query string that mathes this function. The match
+is found either through the <code class="docutils literal notranslate"><span class="pre">match</span></code> parameter of the decorator or
+by matching decorated function’s or class’s name.</p>
+<p>The query might not have a matching SQL query. But if it does
+you may use <code class="docutils literal notranslate"><span class="pre">curosr.execute</span></code> and <code class="docutils literal notranslate"><span class="pre">sql</span></code> arguments to run it.</p>
+<p>You can also directly use the <code class="docutils literal notranslate"><span class="pre">cursor.execute</span></code> method to run your own
+query. Below are few options to declare and invoke a function or a class
+decorated with the <code class="docutils literal notranslate"><span class="pre">query</span></code> decorator.</p>
+<p>This decorator also sets the <code class="docutils literal notranslate"><span class="pre">_is_decorated_by_query</span></code> attribute of
+decorated function to True. This is later used during safety validation
+to make sure that the method is decorated by the <code class="docutils literal notranslate"><span class="pre">&#64;context.query</span></code>
+before being decorated further by such decorators as <code class="docutils literal notranslate"><span class="pre">&#64;context.simple</span></code>.</p>
+<div class="section" id="examples-of-queries">
+<h3>Examples of queries<a class="headerlink" href="#examples-of-queries" title="Permalink to this headline">¶</a></h3>
+<p>Method that has a matching query called “create_table” in the SQL
+queries file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@context</span><span class="o">.</span><span class="n">query</span>
+<span class="k">def</span> <span class="nf">create_table</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">sql</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">cursor</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and its matching query from the SQL queries file, annotated by the
+<code class="docutils literal notranslate"><span class="pre">--</span> <span class="pre">name:</span> <span class="pre">create_table</span></code> comment line:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- name: create_table</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">DEPARTMENTS</span> <span class="p">(</span>
+    <span class="n">ID</span> <span class="nb">INTEGER</span> <span class="k">GENERATED</span> <span class="n">ALWAYS</span> <span class="k">AS</span> <span class="k">IDENTITY</span><span class="p">,</span>
+    <span class="n">NAME</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">ID</span><span class="p">),</span>
+    <span class="k">UNIQUE</span> <span class="p">(</span><span class="n">NAME</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>The next method below simply uses cursor directly to execute some
+text query and ignores any matching queries from the SQL file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@context</span><span class="o">.</span><span class="n">query</span>
+<span class="k">def</span> <span class="nf">do_whatever</span><span class="p">(</span><span class="n">cursor</span><span class="p">):</span>
+    <span class="n">rs</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">with</span> <span class="n">cursor</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+        <span class="n">description</span><span class="p">,</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM employees;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rs</span>
+</pre></div>
+</div>
+<p>Method within a class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@context</span><span class="o">.</span><span class="n">query</span>
+<span class="k">def</span> <span class="nf">insert_sale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cursor</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">cursor</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO SALES VALUES (?)&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">amount</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Below is a method that does not use <code class="docutils literal notranslate"><span class="pre">cursor</span></code> or <code class="docutils literal notranslate"><span class="pre">sql</span></code> arguments
+at all. This makes the decorator useless, because the main purpose of
+the decorator is to pass the connection cursor and a matching SQL query
+to the function during it’s execution:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@context</span><span class="o">.</span><span class="n">query</span>
+<span class="k">def</span> <span class="nf">some_logic</span><span class="p">():</span>
+    <span class="kn">import</span> <span class="nn">time</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;I do whatever I want&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This method will look for query that matches the <code class="docutils literal notranslate"><span class="pre">match</span></code> parameter
+of the decorator and supply it via <code class="docutils literal notranslate"><span class="pre">sql</span></code> argument to the function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@context</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">match</span><span class="o">=</span><span class="s2">&quot;create_employees_index&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">my_logic</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">sql</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">cursor</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This method achieves the exact same result. But instead of
+looking up the query using the <code class="docutils literal notranslate"><span class="pre">match</span></code> parameter it find the
+matching query using the <code class="docutils literal notranslate"><span class="pre">__name__</span></code> of the decorated function
+by default (in this case it’s “create_employees_index”):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@context</span><span class="o">.</span><span class="n">query</span>
+<span class="k">def</span> <span class="nf">create_employees_index</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">sql</span><span class="p">):</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">())</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="sql-files">
+<h2>SQL files<a class="headerlink" href="#sql-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="the-name-tag">
+<h3>The <code class="docutils literal notranslate"><span class="pre">name:</span></code> tag<a class="headerlink" href="#the-name-tag" title="Permalink to this headline">¶</a></h3>
+<p>When parser detects a comment that starts with <code class="docutils literal notranslate"><span class="pre">--</span></code> and contains
+<code class="docutils literal notranslate"><span class="pre">name:</span> <span class="pre">my_query</span></code> somewhere in the line, it treats every next line
+as a part of the query named <code class="docutils literal notranslate"><span class="pre">my_query</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- name: select_all</span>
+<span class="k">SELECT</span> <span class="o">*</span>
+  <span class="k">FROM</span> <span class="n">EMPLOYEES</span>
+ <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">NAME</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>When parser encounters another line that contains the <code class="docutils literal notranslate"><span class="pre">name:</span></code> tag,
+it takes all accumulated lines, glues them together, and saves them
+in the context under their annotated name:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- name: select_all</span>
+<span class="k">SELECT</span> <span class="o">*</span>
+  <span class="k">FROM</span> <span class="n">EMPLOYEES</span>
+ <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">NAME</span><span class="p">;</span>
+
+<span class="c1">-- name: select_james</span>
+<span class="cm">/*</span>
+<span class="cm"> * At this moment, right after encountering another line with the &quot;name:&quot;</span>
+<span class="cm"> * tag, parser takes everything between the lines &quot;-- name: select_all&quot;</span>
+<span class="cm"> * and &quot;-- name: select_james&quot; and saves it as the contents of the</span>
+<span class="cm"> * &quot;select_all&quot; query.</span>
+<span class="cm">*/</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">EMPLOYEES</span> <span class="k">WHERE</span> <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;James&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>If there was some text or other queries that were not annotated
+at the beginning of the file, then they will be skipped and thrown
+out. The parser only considers queries that start with the comment
+line that contains <code class="docutils literal notranslate"><span class="pre">name:</span></code> tag in it:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- file: SQL Queries</span>
+
+<span class="k">SELECT</span> <span class="mi">1</span> <span class="k">FROM</span> <span class="n">DUAL</span><span class="p">;</span>
+
+<span class="cm">/* All this text above will be ignored, including this comment */</span>
+
+<span class="c1">-- name: select_all</span>
+<span class="k">SELECT</span> <span class="o">*</span>
+  <span class="k">FROM</span> <span class="n">EMPLOYEES</span>
+ <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">NAME</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Name tag can contain any alphanumeric characters or, generally
+speaking, any characters that matches <code class="docutils literal notranslate"><span class="pre">\w</span></code> regex:
+<code class="docutils literal notranslate"><span class="pre">[a-zA-Z0-9_]</span></code>. It permits lowercase and uppercase characters as
+well as numbers and underscore:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- name: my_query</span>
+<span class="c1">-- name: c0oL_qUeRy</span>
+<span class="p">...</span> <span class="n">etc</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="comments-without-name-tag">
+<h3>Comments without <code class="docutils literal notranslate"><span class="pre">name:</span></code> tag<a class="headerlink" href="#comments-without-name-tag" title="Permalink to this headline">¶</a></h3>
+<p>If parser encounters a comment line that starts with the <code class="docutils literal notranslate"><span class="pre">--</span></code>
+but does not contain a <code class="docutils literal notranslate"><span class="pre">name:</span></code> tag it will just skip it as if
+it this line does not exist:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- name: my_query</span>
+<span class="k">SELECT</span> <span class="o">*</span>
+  <span class="c1">-- this comment will be ignored</span>
+  <span class="k">FROM</span> <span class="n">MY_TABLE</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Parser also ignores multiline-format comments that start with the
+<code class="docutils literal notranslate"><span class="pre">/*</span></code> and end with the <code class="docutils literal notranslate"><span class="pre">*/</span></code> symbols:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span>
+  <span class="cm">/* this will be ignored even with &quot;name: my_query&quot; inside */</span>
+  <span class="k">FROM</span> <span class="n">MY_TABLE</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-scenario-tag">
+<h3>The <code class="docutils literal notranslate"><span class="pre">scenario:</span></code> tag<a class="headerlink" href="#the-scenario-tag" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">scenario:</span></code> tag is <strong>optional</strong>. It tells the parser which implicit
+scenario this query should belong to. Implicit scenario is a scenario that
+was not explicitly declared in the python file where <a class="reference internal" href="../api/context.html#dbload.context.Context" title="dbload.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>
+object is defined. Implicit scenarios declared in the query annotations are
+automatically created in the <a class="reference internal" href="../api/context.html#dbload.context.Context" title="dbload.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a> object:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- name: select_james, scenario: single_select</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">EMPLOYEES</span> <span class="k">WHERE</span> <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;James&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The example above will implicitly create a scenario called <code class="docutils literal notranslate"><span class="pre">single_select</span></code>.
+When executed directly or inside a play, the <code class="docutils literal notranslate"><span class="pre">single_select</span></code> scenario will
+run a query called <code class="docutils literal notranslate"><span class="pre">select_james</span></code> and that’s all. This demonstrates that
+defining scenarios explicitly in Python is not mandatory. It is possible to
+just mention the scenario across one or many queries in the SQL files and
+it will get automatically created and populated with those queries.</p>
+<p>A query can belong to multiple implicit scenarios, by specifying the
+<code class="docutils literal notranslate"><span class="pre">scenario:</span></code> tag multiple times:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- name: select_all, scenario: run_all, scenario: show_deps</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">DEPARTMENTS</span><span class="p">;</span>
+
+<span class="c1">-- name: insert_employee, scenario: run_all, scenario: insert</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">EMPLOYEES</span><span class="p">(</span><span class="n">ID</span><span class="p">)</span> <span class="k">VALUES</span><span class="p">(</span><span class="n">EMP_SEQ</span><span class="p">.</span><span class="k">NEXT</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In the example above 3 scenarios will be auto-generated and added
+to the <a class="reference internal" href="../api/context.html#dbload.context.Context" title="dbload.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a> object: <code class="docutils literal notranslate"><span class="pre">run_all</span></code>, <code class="docutils literal notranslate"><span class="pre">show_deps</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">insert</span></code>. All of them do not exist in the python file but they
+will now be created in the context.
+When executed, <code class="docutils literal notranslate"><span class="pre">run_all</span></code> scenario will run 2 queries one after the
+other. First, it will execute the <code class="docutils literal notranslate"><span class="pre">select_all</span></code> query. Then it will
+execute the <code class="docutils literal notranslate"><span class="pre">insert_employee</span></code> query.</p>
+<p>All return values for queries executed within implicitly generated
+scenarios are ignored.</p>
+<p>Since every explicitly defined scenario is already infused with all
+the parsed SQL queries, then there is no need to use scenario tag
+for queries used in explicitly defined scenarios.</p>
+<p>Main purpose of the <code class="docutils literal notranslate"><span class="pre">scenario:</span></code> tag is to create implicit scenarios
+that are burdensome to declare in python and mostly represent
+boilerplate code. For example, a scenario that pre-creates or
+destroys all tables, schema, sequences, and data required for running
+the simulated load.</p>
+</div>
+<div class="section" id="ordered-scenario-30">
+<h3>Ordered <code class="docutils literal notranslate"><span class="pre">scenario[30]</span></code><a class="headerlink" href="#ordered-scenario-30" title="Permalink to this headline">¶</a></h3>
+<p>By default, when two or more queries mention the same
+scenario in their annotation, these queries get executed in the
+order in which they were declared in the SQL file.</p>
+<p>When mentioning implicit scenarios in the annotation of the SQL
+queries it is possible to specify the order of execution of this
+particular query within the generated scenario.</p>
+<p>For example, these two queries mention the same implicit scenario
+called <code class="docutils literal notranslate"><span class="pre">teardown</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- name: drop_dbload_schema, simulation: teardown[900]</span>
+<span class="k">DROP</span> <span class="k">SCHEMA</span> <span class="n">DBLOAD</span><span class="p">;</span>
+
+<span class="c1">-- name: drop_departments_table, simulation: teardown[100]</span>
+<span class="k">DROP</span> <span class="k">TABLE</span> <span class="n">DBLOAD</span><span class="p">.</span><span class="n">DBL_DEPARTMENTS</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>But because they specify the order in the square brackets, the
+<code class="docutils literal notranslate"><span class="pre">drop_department_table</span></code> query will get executed before the
+<code class="docutils literal notranslate"><span class="pre">drop_dbload_schema</span></code> query, since it’s “priority” within the
+<code class="docutils literal notranslate"><span class="pre">teardown</span></code> scenario is higher (<code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">&lt;</span> <span class="pre">900</span></code> – the smaller the number,
+the higher is priority).</p>
+<p>Order numbers in the square brackets are sorted in the ascending order,
+which means that <code class="docutils literal notranslate"><span class="pre">-100</span></code> will be executed before <code class="docutils literal notranslate"><span class="pre">0</span></code>. And <code class="docutils literal notranslate"><span class="pre">4</span></code> will be
+executed before <code class="docutils literal notranslate"><span class="pre">10</span></code>.</p>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="getting_started.html" title="previous page">Getting Started</a>
+    <a class='right-next' id="next-link" href="../api/context.html" title="next page">Context</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.1e043a052b0af929e4d8.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020–2021, Dynatrace LLC.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

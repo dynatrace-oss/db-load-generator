@@ -1,0 +1,992 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Database Load Generator &#8212; db-load-generator 0.8.6 documentation</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1e043a052b0af929e4d8.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="guides/installation.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+
+    
+      
+      <a class="navbar-brand" href="#">
+        <img src="_static/db-load-generator.png" class="logo" alt="logo">
+      </a>
+      
+    
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="guides/installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="guides/getting_started.html">
+  Getting Started
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="guides/advanced_usage.html">
+  Advanced Usage
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="api/context.html">
+  Context
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="api/query_parser.html">
+  QueryParser
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="api/exceptions.html">
+  Exceptions
+ </a>
+</li>
+
+        
+      </ul>
+
+      <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/dynatrace-oss/db-load-generator" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#getting-started">
+   Getting Started
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#basic-setup">
+     Basic setup
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#connect-to-database">
+     Connect to database
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#configuration-sources">
+     Configuration sources
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#execute-a-statement">
+     Execute a statement
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#run-queries">
+     Run queries
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#run-scenarios">
+     Run scenarios
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#insert-data">
+     Insert data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#select-data">
+     Select data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#explicit-scenarios">
+     Explicit scenarios
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#explicit-queries">
+     Explicit queries
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#standalone-script">
+     Standalone script
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#background-tasks">
+     Background tasks
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#installation">
+   Installation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#documentation">
+   Documentation
+  </a>
+  <ul class="nav section-nav flex-column">
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#attributions">
+   Attributions
+  </a>
+ </li>
+</ul>
+
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="database-load-generator">
+<h1>Database Load Generator<a class="headerlink" href="#database-load-generator" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">db-load-generator</span></code> is a Python framework and toolbox for generating artificial database loads with as little code as necessary.
+It uses Java and JDBC drivers to connect to the databases. And comes with a command line and ready-to-use scenarios out of the box.</p>
+<p>
+   <a href="https://pypi.org/project/db-load-generator/"><img alt="PyPI" src="https://img.shields.io/pypi/v/db-load-generator?color=blue&logo=pypi"></a>
+   <a href="https://pypi.org/project/db-load-generator/"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/db-load-generator?color=blue&logo=pypi"></a>
+   <a href="https://github.com/dynatrace-oss/db-load-generator/actions/workflows/build-test-release.yml"><img alt="Build Status" src="https://img.shields.io/github/workflow/status/dynatrace-oss/db-load-generator/Build%20Test%20Release?logo=github" /></a>
+   <a href="https://dbload.org"><img src="https://img.shields.io/github/workflow/status/dynatrace-oss/db-load-generator/Build%20Docs?label=docs&logo=github" alt="Documentation Build Status" /></a>
+   <a href="https://github.com/dynatrace-oss/db-load-generator/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/dynatrace-oss/db-load-generator"></a>
+</p><p><strong>What db-load-generator can do</strong></p>
+<ul class="simple">
+<li><p>Generate load scenarios out of annotated SQL code</p></li>
+<li><p>Provide convenient decorators to build queries and scenarios</p></li>
+<li><p>Fully compatible with Python’s DBAPI2</p></li>
+<li><p>Invoke any scenario or query using powerful CLI tool</p></li>
+<li><p>Configurable through config files, environment variables, and CLI arguments</p></li>
+<li><p>Can run as a <a class="reference external" href="https://dramatiq.io">Dramatiq</a> background task queue processor</p></li>
+</ul>
+<p><strong>Supported databases</strong></p>
+<ul class="simple">
+<li><p>Microsoft SQL Server</p></li>
+<li><p>Oracle</p></li>
+<li><p>IBM DB2 (both LUW and z/OS)</p></li>
+<li><p>SAP Hana DB</p></li>
+<li><p>Teradata DB</p></li>
+<li><p>MySQL</p></li>
+<li><p>PostgreSQL</p></li>
+<li><p>SQLite</p></li>
+<li><p><em>any other database that comes with a JDBC driver…</em></p></li>
+</ul>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<div class="hint admonition">
+<p class="admonition-title">Dynamic documentation</p>
+<p>All code, command samples, and outputs below are dynamically generated during documentation build process using the latest version of <code class="docutils literal notranslate"><span class="pre">db-load-generator</span></code>.</p>
+</div>
+<div class="section" id="basic-setup">
+<h3>Basic setup<a class="headerlink" href="#basic-setup" title="Permalink to this headline">¶</a></h3>
+<p>Create an annotated SQL file with a couple of queires in it.
+We are going to start with two queries, one of which creates a simple table and the other one drops it.</p>
+<p><code class="docutils literal notranslate"><span class="pre">queries.sql</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- name: create_departments_table, scenario: setup</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">departments</span> <span class="p">(</span>
+  <span class="n">id</span> <span class="nb">INTEGER</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="n">AUTOINCREMENT</span><span class="p">,</span>
+  <span class="n">name</span> <span class="nb">TEXT</span> <span class="k">UNIQUE</span>
+<span class="p">);</span>
+
+<span class="c1">-- name: drop_departments_table, scenario: teardown</span>
+<span class="k">DROP</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">departments</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Launch <code class="docutils literal notranslate"><span class="pre">dbload</span></code> CLI to see how the queries were parsed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dbload --sql queries.sql show queires
+</pre></div>
+</div>
+<p>The output below shows that two queries were produced from the parsed SQL file:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+-------------------------------+---------------------------------------------------------------------------------+
+| Key                           | Value                                                                           |
++-------------------------------+---------------------------------------------------------------------------------+
+| add_department                |                                                                                 |
+|   sql                         | INSERT INTO departments (name) VALUES (?);                                      |
+| add_employee                  |                                                                                 |
+|   sql                         | INSERT INTO employees (name, title, dep_id) VALUES (?, ?, ?);                   |
+| create_departments_table      |                                                                                 |
+|   sql                         | CREATE TABLE departments ( id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT U... |
+| create_employees_table        |                                                                                 |
+|   sql                         | CREATE TABLE employees ( id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, ti... |
+| drop_departments_table        |                                                                                 |
+|   sql                         | DROP TABLE IF EXISTS departments                                                |
+| get_departments               |                                                                                 |
+|   sql                         | SELECT * FROM departments;                                                      |
+| get_departments_return_random |                                                                                 |
+|   sql                         | SELECT * FROM departments;                                                      |
+| sort_employees                |                                                                                 |
+|   sql                         | SELECT * FROM employees ORDER BY name;                                          |
++-------------------------------+---------------------------------------------------------------------------------+
+</pre></div>
+</div>
+<p>Launch <code class="docutils literal notranslate"><span class="pre">dbload</span></code> CLI once again to show what scenarios were parsed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dbload --sql queries.sql show scenarios
+</pre></div>
+</div>
+<p>One scenario called <code class="docutils literal notranslate"><span class="pre">setup</span></code> and the other one called <code class="docutils literal notranslate"><span class="pre">teardown</span></code> were parsed and created based on the annotated SQL file.
+In this case, each scenario contains a link to the query that mentioned it in the annotation.
+These queries will be executed in the order specified by the <code class="docutils literal notranslate"><span class="pre">auto_run_queries</span></code> list belonging to the scenario.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+--------------------+--------------------------+
+| Key                | Value                    |
++--------------------+--------------------------+
+| setup              |                          |
+|   auto_run_queries |                          |
+|     -              | create_departments_table |
+|     -              | create_employees_table   |
+| teardown           |                          |
+|   auto_run_queries |                          |
+|     -              | drop_departments_table   |
++--------------------+--------------------------+
+</pre></div>
+</div>
+<p>You can see that these scenarios were created implicitly (without being explicitly declared in a python module),
+because they were specified in the <code class="docutils literal notranslate"><span class="pre">scenario:</span> <span class="pre">setup</span></code> and <code class="docutils literal notranslate"><span class="pre">scenario:</span> <span class="pre">teardown</span></code> parts of the query annotations.
+Each annotated SQL query can mention several scenarios as part of its annotations and these
+scenarios will be created automatically, if they were not explicitly declared before.
+If a query mentions a scenario in its annotation, then that query will get executed as part of the mentioned scenario.
+Since several queries can mention the same scenario, in that scenario they are executed in the order they were defined in the SQL file.
+Alternatively, execution order can be specified in square brackets after the name of the scenario: <code class="docutils literal notranslate"><span class="pre">scenario:</span> <span class="pre">setup[100]</span></code>.
+The lower the number – the higher is priority of the execution of that query.
+Any such queires are executed before any other logic inside the defined scenario proceeds.</p>
+</div>
+<div class="section" id="connect-to-database">
+<h3>Connect to database<a class="headerlink" href="#connect-to-database" title="Permalink to this headline">¶</a></h3>
+<p>It’s time to connect to the actual database to run our scenarios and queries!
+At least <a class="reference external" href="https://openjdk.java.net/install/index.html">Java</a> 8 must be installed and <code class="docutils literal notranslate"><span class="pre">JAVA_HOME</span></code> environment variable should point to the location of the JVM installation.
+If no suitable JVM is found there, common directories based on the platform will be searched.
+On windows the registry will be consulted.
+<strong>JDBC</strong> driver for the destination database must be present on the system as well.</p>
+<p>In this example we will connect to the <strong>SQLite</strong> database and a proper driver
+<code class="docutils literal notranslate"><span class="pre">sqlite-jdbc-3.34.0.jar</span></code> (latest GA release at the time of the writing)
+can be downloaded from <a class="reference external" href="https://github.com/xerial/sqlite-jdbc">SQLite JDBC Driver</a> GitHub.</p>
+<p>In order to connect, a couple of parameters must be specified:
+<em>DSN string (URI)</em> and <em>class path</em> to the driver files. Let’s <strong>test our connection</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dbload <span class="se">\</span>
+   --dsn jdbc:sqlite:sample.db <span class="se">\</span>
+   --classpath sqlite-jdbc-3.34.0.jar <span class="se">\</span>
+   <span class="nb">test</span>
+</pre></div>
+</div>
+<p>More feature-rich databases such as SQL Server, Oracle, SAP Hana DB, and others might require additional parameters
+to be specified: JDBC driver class name (<code class="docutils literal notranslate"><span class="pre">--driver</span> <span class="pre">com.ibm.db2.jcc.DB2Jcc</span></code>) or driver arguments such as password, user,
+or database name (<code class="docutils literal notranslate"><span class="pre">--driver-arg</span> <span class="pre">user=sa</span></code>) might be required.
+But for SQLite using just the <code class="docutils literal notranslate"><span class="pre">dsn</span></code> and <code class="docutils literal notranslate"><span class="pre">classpath</span></code> is enough. The connection was successful:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Successfully connected to the database.
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuration-sources">
+<h3>Configuration sources<a class="headerlink" href="#configuration-sources" title="Permalink to this headline">¶</a></h3>
+<p>Specifying the connection parameters as command line arguments every time can get out of hands really quick.
+Instead, let’s put them in the config file.</p>
+<p><code class="docutils literal notranslate"><span class="pre">dbload.json</span></code>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;classpath&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sqlite-jdbc-3.34.0.jar&quot;</span><span class="p">],</span>
+  <span class="nt">&quot;dsn&quot;</span><span class="p">:</span> <span class="s2">&quot;jdbc:sqlite:sample.db&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;sql&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;queries.sql&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Every command line argument has its matching counterpart in the config file. If some of the arguments are not specified
+in either of the locations, the default values are used.</p>
+<p>By default, dbload looks for the <code class="docutils literal notranslate"><span class="pre">dbload.json</span></code> file in the current directory.
+It is possible to specify a different configuration path using the <code class="docutils literal notranslate"><span class="pre">--config</span> <span class="pre">other_dir/dbload.cfg</span></code> option.
+If non-default configuration file is not in the current directory, then any relative path in that file will be adjusted
+according to the current working directory of dbload (directory from which dbload was launched).</p>
+<p>Every configuration parameter can also be supplied as an environment variable with the <code class="docutils literal notranslate"><span class="pre">DBLOAD_</span></code> prefix.
+For example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">DBLOAD_DSN</span><span class="o">=</span><span class="s2">&quot;jdbc:sqlite:sample.db&quot;</span>
+</pre></div>
+</div>
+<p>is equivalent to <code class="docutils literal notranslate"><span class="pre">--dsn</span> <span class="pre">jdbc:sqlite:sample.db</span></code>.</p>
+<p>Configurations are loaded in the following order <strong>from least to most important</strong>. Merging any new values on top of the old ones:</p>
+<ul class="simple">
+<li><p>Default values</p></li>
+<li><p>JSON file</p></li>
+<li><p>Environment variables</p></li>
+<li><p>Command line arguments</p></li>
+</ul>
+<p>As mentioned above, more sophisticated databases require other parameters, such as driver arguments
+with user names and passwords, to initiate a connection.
+For some databases, the driver arguments must be presented as a dictionary and for others, as a list.
+Both ways are supported. Choose based on what the particular database’s driver needs.
+Example for Microsoft SQL Server:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;driver_arg&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;databaseName&quot;</span><span class="p">:</span> <span class="s2">&quot;master&quot;</span><span class="p">,</span> <span class="nt">&quot;user&quot;</span><span class="p">:</span> <span class="s2">&quot;sa&quot;</span><span class="p">,</span> <span class="nt">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;StrongPassword!&quot;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>and for IBM DB2:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;driver_arg&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;db2demo&quot;</span><span class="p">,</span> <span class="s2">&quot;PaSsWoRdforDB2&quot;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="execute-a-statement">
+<h3>Execute a statement<a class="headerlink" href="#execute-a-statement" title="Permalink to this headline">¶</a></h3>
+<p>You can execute a random statement against the database.
+Let’s see what tables we have in our fresh SQLite database. The database currently contains no tables:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ dbload execute &quot;SELECT * FROM sqlite_master where type=&#39;table&#39;&quot;
+Executing: SELECT * FROM sqlite_master where type=&#39;table&#39;
++---+------+------+----------+----------+-----+
+| # | type | name | tbl_name | rootpage | sql |
++---+------+------+----------+----------+-----+
++---+------+------+----------+----------+-----+
+</pre></div>
+</div>
+<p>Prepared statements with properties are also supported. This command will produce the exact same result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ dbload execute &quot;SELECT * FROM sqlite_master where type=?&quot; --property table
+Executing: SELECT * FROM sqlite_master where type=?
+Properties: [&#39;table&#39;]
++---+------+------+----------+----------+-----+
+| # | type | name | tbl_name | rootpage | sql |
++---+------+------+----------+----------+-----+
++---+------+------+----------+----------+-----+
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-queries">
+<h3>Run queries<a class="headerlink" href="#run-queries" title="Permalink to this headline">¶</a></h3>
+<p>Let’s run some of the queries we’ve declared earlier in the <code class="docutils literal notranslate"><span class="pre">queries.sql</span></code> file. Create a table:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dbload query create_departments_table
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Executing: create_departments_table
++---------------+
+| Rows affected |
++---------------+
+|       0       |
++---------------+
+</pre></div>
+</div>
+<p>and then drop it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dbload query drop_departments_table
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Executing: drop_departments_table
++---------------+
+| Rows affected |
++---------------+
+|       0       |
++---------------+
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-scenarios">
+<h3>Run scenarios<a class="headerlink" href="#run-scenarios" title="Permalink to this headline">¶</a></h3>
+<p>Similarly, we can run entire scenarios from the command line.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dbload scenario setup
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Executing: setup
+</pre></div>
+</div>
+<p>Our implicit scenario “setup” merely executes its <code class="docutils literal notranslate"><span class="pre">auto_run_queries</span></code> and does nothing else.
+So, nothing besides the general “Executing…” is printed to the terminal.</p>
+</div>
+<div class="section" id="insert-data">
+<h3>Insert data<a class="headerlink" href="#insert-data" title="Permalink to this headline">¶</a></h3>
+<p>Let’s insert some data into the table we’ve just created.
+Add a new query that inserts data into the <code class="docutils literal notranslate"><span class="pre">departments</span></code> table:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- name: create_departments_table, scenario: setup</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">departments</span> <span class="p">(</span>
+  <span class="n">id</span> <span class="nb">INTEGER</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="n">AUTOINCREMENT</span><span class="p">,</span>
+  <span class="n">name</span> <span class="nb">TEXT</span> <span class="k">UNIQUE</span>
+<span class="p">);</span>
+
+<span class="c1">-- name: drop_departments_table, scenario: teardown</span>
+<span class="k">DROP</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">departments</span>
+
+<span class="hll"><span class="c1">-- name: add_department</span>
+</span><span class="hll"><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">departments</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">);</span>
+</span></pre></div>
+</div>
+<p>As you can see, <code class="docutils literal notranslate"><span class="pre">add_department</span></code> is a prepared statement.
+It requires a property to be supplied before execution:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dbload query add_department --property <span class="s1">&#39;accounting&#39;</span>
+dbload query add_department -p <span class="s1">&#39;r&amp;d&#39;</span>
+</pre></div>
+</div>
+<p>Notice how <code class="docutils literal notranslate"><span class="pre">-p</span></code>  is a shortcut for <code class="docutils literal notranslate"><span class="pre">--property</span></code>.
+<em>dbload</em> CLI has shortcuts for almost all supported configuration properties.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
+  File &quot;/root/.cache/pypoetry/virtualenvs/db-load-generator-9TtSrW0h-py3.9/bin/dbload&quot;, line 5, in &lt;module&gt;
+    main()
+  File &quot;/root/.cache/pypoetry/virtualenvs/db-load-generator-9TtSrW0h-py3.9/lib/python3.9/site-packages/click/core.py&quot;, line 829, in __call__
+    return self.main(*args, **kwargs)
+  File &quot;/root/.cache/pypoetry/virtualenvs/db-load-generator-9TtSrW0h-py3.9/lib/python3.9/site-packages/click/core.py&quot;, line 782, in main
+    rv = self.invoke(ctx)
+  File &quot;/root/.cache/pypoetry/virtualenvs/db-load-generator-9TtSrW0h-py3.9/lib/python3.9/site-packages/click/core.py&quot;, line 1259, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/root/.cache/pypoetry/virtualenvs/db-load-generator-9TtSrW0h-py3.9/lib/python3.9/site-packages/click/core.py&quot;, line 1066, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File &quot;/root/.cache/pypoetry/virtualenvs/db-load-generator-9TtSrW0h-py3.9/lib/python3.9/site-packages/click/core.py&quot;, line 610, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/app/dbload/cli.py&quot;, line 162, in query
+    ctx.infuse()
+  File &quot;/app/dbload/context.py&quot;, line 127, in infuse
+    self._load_predefined_simulation()
+  File &quot;/app/dbload/context.py&quot;, line 148, in _load_predefined_simulation
+    raise UnsupportedPredefinedSimulationError(cfg.predefined)
+dbload.exceptions.UnsupportedPredefinedSimulationError: Attempting to load predefined simulation &#39;accounting&#39; that does not exist.
+</pre></div>
+</div>
+<p>The same approach with supplying data via properties can be applied to update and removal of data.</p>
+</div>
+<div class="section" id="select-data">
+<h3>Select data<a class="headerlink" href="#select-data" title="Permalink to this headline">¶</a></h3>
+<p>Now, to compose some queries that retrieve the data, let’s add a query that retrieves all rows from <code class="docutils literal notranslate"><span class="pre">departments</span></code> table.</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- name: create_departments_table, scenario: setup</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">departments</span> <span class="p">(</span>
+  <span class="n">id</span> <span class="nb">INTEGER</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="n">AUTOINCREMENT</span><span class="p">,</span>
+  <span class="n">name</span> <span class="nb">TEXT</span> <span class="k">UNIQUE</span>
+<span class="p">);</span>
+
+<span class="c1">-- name: drop_departments_table, scenario: teardown</span>
+<span class="k">DROP</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">departments</span>
+
+<span class="c1">-- name: add_department</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">departments</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">);</span>
+
+<span class="hll"><span class="c1">-- name: get_departments, option: return_random</span>
+</span><span class="hll"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">departments</span><span class="p">;</span>
+</span></pre></div>
+</div>
+<p>But there is a new annotation tag: we’ve added <code class="docutils literal notranslate"><span class="pre">option:</span> <span class="pre">return_random</span></code> part to the annotation of the query.
+That gives as an advangate by automatically generating an additional variant of the <em>get_departments</em> query,
+which returns a single random row instead of all the rows.
+That can come in handy when we need to quickly retrieve a random foreign key required for some other update or insert operation.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dbload query get_departments
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Executing: get_departments
++---+----+------+
+| # | id | name |
++---+----+------+
++---+----+------+
+</pre></div>
+</div>
+<p>Now, let’s try the <em>“return_random”</em> variant of that query.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dbload query get_departments_return_random
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Executing: get_departments_return_random
++---+----+------+
+| # | id | name |
++---+----+------+
++---+----+------+
+</pre></div>
+</div>
+</div>
+<div class="section" id="explicit-scenarios">
+<h3>Explicit scenarios<a class="headerlink" href="#explicit-scenarios" title="Permalink to this headline">¶</a></h3>
+<p>We will now add employees to our database.
+First, we’ll add a couple more queries that will accomplish that.</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- name: create_departments_table, scenario: setup</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">departments</span> <span class="p">(</span>
+  <span class="n">id</span> <span class="nb">INTEGER</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="n">AUTOINCREMENT</span><span class="p">,</span>
+  <span class="n">name</span> <span class="nb">TEXT</span> <span class="k">UNIQUE</span>
+<span class="p">);</span>
+
+<span class="c1">-- name: drop_departments_table, scenario: teardown</span>
+<span class="k">DROP</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">departments</span>
+
+<span class="c1">-- name: add_department</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">departments</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">);</span>
+
+<span class="c1">-- name: get_departments, option: return_random</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">departments</span><span class="p">;</span>
+
+<span class="hll"><span class="c1">-- name: create_employees_table, scenario: setup</span>
+</span><span class="hll"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">employees</span> <span class="p">(</span>
+</span><span class="hll">  <span class="n">id</span> <span class="nb">INTEGER</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="n">AUTOINCREMENT</span><span class="p">,</span>
+</span><span class="hll">  <span class="n">name</span> <span class="nb">TEXT</span><span class="p">,</span>
+</span><span class="hll">  <span class="n">title</span> <span class="nb">TEXT</span><span class="p">,</span>
+</span><span class="hll">  <span class="n">dep_id</span> <span class="nb">INTEGER</span><span class="p">,</span>
+</span><span class="hll">  <span class="k">FOREIGN</span> <span class="k">KEY</span><span class="p">(</span><span class="n">dep_id</span><span class="p">)</span> <span class="k">REFERENCES</span> <span class="n">departments</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+</span><span class="hll"><span class="p">)</span>
+</span>
+<span class="hll"><span class="c1">-- name: add_employee</span>
+</span><span class="hll"><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">employees</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">dep_id</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">);</span>
+</span></pre></div>
+</div>
+<p>Now, let’s define the first explicit scenario in a python module.</p>
+<p><code class="docutils literal notranslate"><span class="pre">scenarios.py</span></code>:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dbload</span>
+<span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+
+<span class="nd">@dbload</span><span class="o">.</span><span class="n">scenario</span>
+<span class="k">def</span> <span class="nf">load_employees</span><span class="p">(</span><span class="n">connection</span><span class="p">):</span>
+    <span class="n">fake</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">job</span><span class="p">()</span>
+        <span class="n">dep_id</span> <span class="o">=</span> <span class="n">dep_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">with</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+            <span class="n">dep_id</span><span class="p">,</span> <span class="n">dep_name</span> <span class="o">=</span> <span class="n">load_employees</span><span class="o">.</span><span class="n">get_departments_return_random</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
+
+        <span class="k">with</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+            <span class="n">load_employees</span><span class="o">.</span><span class="n">add_employee</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">dep_id</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New employee: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> working as &#39;</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&#39; in &#39;</span><span class="si">{</span><span class="n">dep_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>Boy, that escalated quickly. Let’s try to digest it line by line.
+At first, two modules are imported: <em>dbload</em> and <a class="reference external" href="https://faker.readthedocs.io/en/stable/index.html">Faker</a>, a python package that generates fake data.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="hll"><span class="kn">import</span> <span class="nn">dbload</span>
+</span><span class="hll"><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+</span></pre></div>
+</td></tr></table></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For all intents and purposes, the <code class="docutils literal notranslate"><span class="pre">scenarios.py</span></code> file we’ve created is a normal Python module.
+It can be a part of the package or contain any other logic or libraries.
+When we point <code class="docutils literal notranslate"><span class="pre">dbload</span></code> CLI to this file it imports the file as a module.</p>
+</div>
+<p>After that, we define a scenario using the <code class="docutils literal notranslate"><span class="pre">&#64;dbload.scenario</span></code> decorator.
+This decorator automatically registers the scenario within <code class="docutils literal notranslate"><span class="pre">dbload</span></code> and does some other things, like providing a valid open connection.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="hll"><span class="nd">@dbload</span><span class="o">.</span><span class="n">scenario</span>
+</span><span class="hll"><span class="k">def</span> <span class="nf">load_employees</span><span class="p">(</span><span class="n">connection</span><span class="p">):</span>
+</span><span class="hll">    <span class="n">fake</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">()</span>
+</span></pre></div>
+</td></tr></table></div>
+<p>For each employee we want to add to the database we’ll open a new cursor and generate some fake data.
+The department ID (<code class="docutils literal notranslate"><span class="pre">dep_id</span></code>), however, is a <em>foreign key</em> that has to reference an actual ID from the departments table.
+That’s where the <em>return_random</em> query variant will come handy. We will use it to retrieve a random department ID.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">job</span><span class="p">()</span>
+        <span class="n">dep_id</span> <span class="o">=</span> <span class="n">dep_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">with</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+<span class="hll">            <span class="n">dep_id</span><span class="p">,</span> <span class="n">dep_name</span> <span class="o">=</span> <span class="n">load_employees</span><span class="o">.</span><span class="n">get_departments_return_random</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
+</span>
+        <span class="k">with</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+            <span class="n">load_employees</span><span class="o">.</span><span class="n">add_employee</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">dep_id</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New employee: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> working as &#39;</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&#39; in &#39;</span><span class="si">{</span><span class="n">dep_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>Notice, how <code class="docutils literal notranslate"><span class="pre">get_departments_return_random</span></code> function is not actually defined anywhere in our python module.
+But it was implicitly created from the annotated SQL file.
+And by default, each scenario gets <em>infused</em> with all parsed queries, which are attached to the scenario function as attributes.
+That’s why we access that query as an attribute of the scenario.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.first</span></code> part then retrieves the first row returned by the query (and our <em>return_random</em> query returns only one row).
+The first element in that tuple <code class="docutils literal notranslate"><span class="pre">.first[0]</span></code> is going to be the random department id we need.
+We unpack the <code class="docutils literal notranslate"><span class="pre">.first</span></code> tuple to get both the department name and its ID.</p>
+<p>Finally, we invoke the <code class="docutils literal notranslate"><span class="pre">add_employee</span></code> query and supply it with the data we’ve generated and collected.
+Similarly, the <code class="docutils literal notranslate"><span class="pre">add_employee</span></code> query has been parsed from the SQL file and was attached to the scenario object as an attribute.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">job</span><span class="p">()</span>
+        <span class="n">dep_id</span> <span class="o">=</span> <span class="n">dep_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">with</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+            <span class="n">dep_id</span><span class="p">,</span> <span class="n">dep_name</span> <span class="o">=</span> <span class="n">load_employees</span><span class="o">.</span><span class="n">get_departments_return_random</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
+
+        <span class="k">with</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+<span class="hll">            <span class="n">load_employees</span><span class="o">.</span><span class="n">add_employee</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">dep_id</span><span class="p">)</span>
+</span>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New employee: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> working as &#39;</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&#39; in &#39;</span><span class="si">{</span><span class="n">dep_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You don’t have to pass a new <code class="docutils literal notranslate"><span class="pre">cursor</span></code> argument to the query, when calling it.
+If no open cursor or connection are passed to a query or a scenario, then they will be created automatically.
+The downside to this is that in the scenario above a new connection will be created for each query
+invoked without a valid cursor.
+That would be 20 new connections sequentially opened and closed to invoke 2 queries x10 times.</p>
+</div>
+<p>Let’s make sure the <em>employees</em> table is created and then add the employees to it by running the scenario we’ve created.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dbload --ignore scenario setup
+</pre></div>
+</div>
+<p>Since we’ve added a new query to the “setup” scenario and we want to run it again to create <em>employees</em> table we’ll get errors,
+because other tables (<em>departments</em>) already exist.
+To ignore the errors we can specify the <code class="docutils literal notranslate"><span class="pre">--ignore</span></code> flag.
+This flag works when invoking queries as well.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Executing: setup
+Traceback (most recent call last):
+  File &quot;/root/.cache/pypoetry/virtualenvs/db-load-generator-9TtSrW0h-py3.9/bin/dbload&quot;, line 5, in &lt;module&gt;
+    main()
+  File &quot;/root/.cache/pypoetry/virtualenvs/db-load-generator-9TtSrW0h-py3.9/lib/python3.9/site-packages/click/core.py&quot;, line 829, in __call__
+    return self.main(*args, **kwargs)
+  File &quot;/root/.cache/pypoetry/virtualenvs/db-load-generator-9TtSrW0h-py3.9/lib/python3.9/site-packages/click/core.py&quot;, line 782, in main
+    rv = self.invoke(ctx)
+  File &quot;/root/.cache/pypoetry/virtualenvs/db-load-generator-9TtSrW0h-py3.9/lib/python3.9/site-packages/click/core.py&quot;, line 1259, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/root/.cache/pypoetry/virtualenvs/db-load-generator-9TtSrW0h-py3.9/lib/python3.9/site-packages/click/core.py&quot;, line 1066, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File &quot;/root/.cache/pypoetry/virtualenvs/db-load-generator-9TtSrW0h-py3.9/lib/python3.9/site-packages/click/core.py&quot;, line 610, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/app/dbload/cli.py&quot;, line 147, in scenario
+    ctx.scenarios[scenario_name].function(ignore=config.ignore)
+  File &quot;/app/dbload/scenario.py&quot;, line 132, in wrapper_scenario
+    raise ScenarioExecutionError(e) from None
+dbload.exceptions.ScenarioExecutionError: [SQLITE_ERROR] SQL error or missing database (table departments already exists)
+</pre></div>
+</div>
+<p>Now, let’s run the <em>load_employees</em> scenario:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dbload --module scenarios.py scenario load_employees
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Scenario &#39;load_employees&#39; does not exist.
+</pre></div>
+</div>
+</div>
+<div class="section" id="explicit-queries">
+<h3>Explicit queries<a class="headerlink" href="#explicit-queries" title="Permalink to this headline">¶</a></h3>
+<p>Let’s add a new query but this time we will define it in the Python module.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dbload</span>
+<span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+
+<span class="hll"><span class="nd">@dbload</span><span class="o">.</span><span class="n">query</span>
+</span><span class="hll"><span class="k">def</span> <span class="nf">sort_employees</span><span class="p">(</span><span class="n">cursor</span><span class="p">):</span>
+</span><span class="hll">    <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM employees ORDER BY name&quot;</span>
+</span><span class="hll">    <span class="k">with</span> <span class="n">cursor</span><span class="p">:</span>
+</span><span class="hll">        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+</span><span class="hll">        <span class="n">rows</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+</span><span class="hll">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alphabetically first employee: </span><span class="si">{</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>In this query we are not relying on the annotated SQL file at all, instead doing everything manually:
+defining SQL statement in a string, executing it in the cursor, and fetching the results.
+We could automate the result fetching part in the same way it happens within implicit queries.
+In order to do that we are going to feed the cursor with executed statement to the <code class="docutils literal notranslate"><span class="pre">QueryResult</span></code> class.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="kn">from</span> <span class="nn">dbload</span> <span class="kn">import</span> <span class="n">query</span><span class="p">,</span> <span class="n">scenario</span><span class="p">,</span> <span class="n">QueryResult</span>
+</span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+
+<span class="hll"><span class="nd">@query</span>
+</span><span class="k">def</span> <span class="nf">sort_employees</span><span class="p">(</span><span class="n">cursor</span><span class="p">):</span>
+    <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM employees ORDER BY name&quot;</span>
+    <span class="k">with</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+<span class="hll">        <span class="n">name</span> <span class="o">=</span> <span class="n">QueryResult</span><span class="o">.</span><span class="n">from_cursor</span><span class="p">(</span><span class="n">cursor</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span><span class="hll">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alphabetically first employee: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>We’ve changed the import line to include <em>QueryResult</em>.
+Now, when building a query result instance from the cursor, we get its convenience in return, e.g. using such methods as <code class="docutils literal notranslate"><span class="pre">.first</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dbload --module scenarios.py query sort_employees
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Executing: sort_employees
++---+----+------+-------+--------+
+| # | id | name | title | dep_id |
++---+----+------+-------+--------+
++---+----+------+-------+--------+
+</pre></div>
+</div>
+<p>How about we combine both annotated SQL and explicitly defined query?
+It’s convenient to store actual SQL statements in the SQL file, because we get a proper syntax highlighting,
+reusability (use same <code class="docutils literal notranslate"><span class="pre">.sql</span></code> file in any SQL IDE), and keep our Python code more clean.</p>
+<p><code class="docutils literal notranslate"><span class="pre">queries.sql</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="c1">-- name: sort_employees</span>
+</span><span class="hll"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">employees</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">name</span><span class="p">;</span>
+</span></pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">scenarios.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@query</span>
+<span class="k">def</span> <span class="nf">sort_employees</span><span class="p">(</span><span class="n">cursor</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">cursor</span><span class="p">:</span>
+<span class="hll">        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sort_employees</span><span class="o">.</span><span class="n">sql</span><span class="p">)</span>
+</span>        <span class="n">name</span> <span class="o">=</span> <span class="n">QueryResult</span><span class="o">.</span><span class="n">from_cursor</span><span class="p">(</span><span class="n">cursor</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alphabetically first employee: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The annotated SQL query <em>sort_employees</em> got matched with the explicitly defined query with the same name in the Python module.
+The queires are created implicitly only when they were not defined in the python module.
+In this case, the query was defined, so the annotated SQL statement got attached to the query function as a <code class="docutils literal notranslate"><span class="pre">.sql</span></code> attribute
+that contains the actual statement.</p>
+<p>By executing the rewritten query we’ll get the same result:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dbload --module scenarios.py query sort_employees
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Executing: sort_employees
++---+----+------+-------+--------+
+| # | id | name | title | dep_id |
++---+----+------+-------+--------+
++---+----+------+-------+--------+
+</pre></div>
+</div>
+</div>
+<div class="section" id="standalone-script">
+<h3>Standalone script<a class="headerlink" href="#standalone-script" title="Permalink to this headline">¶</a></h3>
+<p>It’s not required to use <code class="docutils literal notranslate"><span class="pre">dbload</span></code> CLI to invoke queries and scenarios.
+Instead, we can turn our <em>scenarios.py</em> into a standalone script.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="ch">#!/usr/bin/env python</span>
+</span><span class="hll">
+</span><span class="hll"><span class="kn">from</span> <span class="nn">dbload</span> <span class="kn">import</span> <span class="p">(</span>
+</span><span class="hll">    <span class="n">query</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">scenario</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">QueryResult</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">get_context</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">get_connection</span><span class="p">,</span>
+</span><span class="hll">    <span class="n">get_config</span><span class="p">,</span>
+</span><span class="hll"><span class="p">)</span>
+</span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+
+<span class="nd">@query</span>
+<span class="k">def</span> <span class="nf">sort_employees</span><span class="p">(</span><span class="n">cursor</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sort_employees</span><span class="o">.</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">QueryResult</span><span class="o">.</span><span class="n">from_cursor</span><span class="p">(</span><span class="n">cursor</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alphabetically first employee: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nd">@scenario</span>
+<span class="k">def</span> <span class="nf">load_employees</span><span class="p">(</span><span class="n">connection</span><span class="p">):</span>
+    <span class="n">fake</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">job</span><span class="p">()</span>
+        <span class="n">dep_id</span> <span class="o">=</span> <span class="n">dep_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">with</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+            <span class="n">dep_id</span><span class="p">,</span> <span class="n">dep_name</span> <span class="o">=</span> <span class="n">load_employees</span><span class="o">.</span><span class="n">get_departments_return_random</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
+
+        <span class="k">with</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+            <span class="n">load_employees</span><span class="o">.</span><span class="n">add_employee</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">dep_id</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New employee: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> working as &#39;</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&#39; in &#39;</span><span class="si">{</span><span class="n">dep_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+
+<span class="hll"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class="hll">    <span class="c1"># Initialize config: will search and parse config file, env vars, etc.</span>
+</span><span class="hll">    <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">({</span><span class="s2">&quot;driver&quot;</span><span class="p">:</span> <span class="s2">&quot;org.sqlite.JDBC&quot;</span><span class="p">,</span> <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+</span><span class="hll">    <span class="c1"># Get global context</span>
+</span><span class="hll">    <span class="n">context</span> <span class="o">=</span> <span class="n">get_context</span><span class="p">()</span>
+</span><span class="hll">    <span class="c1"># Infuse context with content parsed from annotated SQL file</span>
+</span><span class="hll">    <span class="n">context</span><span class="o">.</span><span class="n">infuse</span><span class="p">()</span>
+</span><span class="hll">    <span class="c1"># Initialize new connection</span>
+</span><span class="hll">    <span class="n">connection</span> <span class="o">=</span> <span class="n">get_connection</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</span><span class="hll">    <span class="c1"># Invoke something...</span>
+</span><span class="hll">    <span class="k">with</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cur</span><span class="p">:</span>
+</span><span class="hll">        <span class="n">sort_employees</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>We can run it as a normal Python script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python scenarios.py
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>2021-06-18 12:41:17.617 | DEBUG    | dbload.context:register_query:72 - Registering &#39;sort_employees&#39; query in the context.
+2021-06-18 12:41:17.618 | DEBUG    | dbload.context:register_scenario:94 - Registering &#39;load_employees&#39; scenario in the context.
+Traceback (most recent call last):
+  File &quot;/app/docs/tutorial/step_8.py&quot;, line 47, in &lt;module&gt;
+    sort_employees(cur)
+  File &quot;/app/dbload/query.py&quot;, line 185, in wrapper_query
+    raise QueryExecutionError(e) from None
+dbload.exceptions.QueryExecutionError: &#39;NoneType&#39; object is not subscriptable
+</pre></div>
+</div>
+</div>
+<div class="section" id="background-tasks">
+<h3>Background tasks<a class="headerlink" href="#background-tasks" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to turn each query and scenario into a background task queue processor by using <a class="reference external" href="https://dramatiq.io">Dramatiq</a>.
+All you need to do is to decorate the required objects with the <code class="docutils literal notranslate"><span class="pre">&#64;dramatiq.actor</span></code> decorator.</p>
+</div>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">db-load-generator</span></code> can be installed from PyPI.
+It needs <a class="reference external" href="https://openjdk.java.net/install/index.html">Java</a> installed and a <a class="reference external" href="https://en.wikipedia.org/wiki/Java_Database_Connectivity">JDBC</a> driver to connect to the actual database.
+For other installation options and <a class="reference internal" href="guides/installation.html#installation-requirements"><span class="std std-ref">Requirements</span></a> please see <a class="reference internal" href="guides/installation.html"><span class="doc">Installation</span></a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install db-load-generator
+</pre></div>
+</div>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="guides/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/advanced_usage.html">Advanced Usage</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/context.html">Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/query_parser.html">QueryParser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/exceptions.html">Exceptions</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="attributions">
+<h2>Attributions<a class="headerlink" href="#attributions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>DBLoad is built on top of the Python, Java/JDBC, and the excellent <a class="reference external" href="https://jpype.readthedocs.io/en/latest/">JPype library</a>.</p></li>
+<li><p>Icons made by <a class="reference external" href="https://www.flaticon.com/authors/nikita-golubev">Nikita Golubev</a> and <a class="reference external" href="https://smashicons.com/">Smashicons</a> from <a class="reference external" href="https://www.flaticon.com/">Flaticon</a>.</p></li>
+<li><p><a class="reference external" href="https://github.com/xerial/sqlite-jdbc">SQLite JDBC Driver</a> by <a class="reference external" href="https://github.com/xerial">xerial</a>.</p></li>
+</ul>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='right-next' id="next-link" href="guides/installation.html" title="next page">Installation</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.1e043a052b0af929e4d8.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020–2021, Dynatrace LLC.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

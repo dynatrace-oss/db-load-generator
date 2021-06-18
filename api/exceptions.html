@@ -1,0 +1,321 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exceptions &#8212; db-load-generator 0.8.6 documentation</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1e043a052b0af929e4d8.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="QueryParser" href="query_parser.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+
+    
+      
+      <a class="navbar-brand" href="../index.html">
+        <img src="../_static/db-load-generator.png" class="logo" alt="logo">
+      </a>
+      
+    
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../guides/installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../guides/getting_started.html">
+  Getting Started
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../guides/advanced_usage.html">
+  Advanced Usage
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="context.html">
+  Context
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="query_parser.html">
+  QueryParser
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="current reference internal nav-link" href="#">
+  Exceptions
+ </a>
+</li>
+
+        
+      </ul>
+
+      <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/dynatrace-oss/db-load-generator" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="module-dbload.exceptions">
+<span id="exceptions"></span><h1>Exceptions<a class="headerlink" href="#module-dbload.exceptions" title="Permalink to this headline">¶</a></h1>
+<dl class="py exception">
+<dt id="dbload.exceptions.SqlFileEmptyError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">SqlFileEmptyError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dbload/exceptions.html#SqlFileEmptyError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.SqlFileEmptyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>File with annotated SQL queries is empty.</p>
+<p>Raised when a text file with annotated SQL queries is empty.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.QueryExecutionError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">QueryExecutionError</span></code><a class="reference internal" href="../_modules/dbload/exceptions.html#QueryExecutionError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.QueryExecutionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception while executing a query.</p>
+<p>Raised when an error happens during executing of the function decorated by
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">query()</span></code> decorator.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.ScenarioExecutionError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">ScenarioExecutionError</span></code><a class="reference internal" href="../_modules/dbload/exceptions.html#ScenarioExecutionError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.ScenarioExecutionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception while executing a scenario.</p>
+<p>Raised when an error happens during executing of the function decorated by
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">scenario()</span></code> decorator.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.ConnectionOpeningError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">ConnectionOpeningError</span></code><a class="reference internal" href="../_modules/dbload/exceptions.html#ConnectionOpeningError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.ConnectionOpeningError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception while connecting to database.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.ConnectionClosingError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">ConnectionClosingError</span></code><a class="reference internal" href="../_modules/dbload/exceptions.html#ConnectionClosingError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.ConnectionClosingError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception while closing the connection to database.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.CommitError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">CommitError</span></code><a class="reference internal" href="../_modules/dbload/exceptions.html#CommitError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.CommitError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception during transaction commit to database.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.RollbackError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">RollbackError</span></code><a class="reference internal" href="../_modules/dbload/exceptions.html#RollbackError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.RollbackError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception during transaction rollback in database.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.CursorClosedError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">CursorClosedError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dbload/exceptions.html#CursorClosedError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.CursorClosedError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closed cursor is passed.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.CursorTypeError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">CursorTypeError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dbload/exceptions.html#CursorTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.CursorTypeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cursor object is of wrong type.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.ConnectionClosedError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">ConnectionClosedError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dbload/exceptions.html#ConnectionClosedError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.ConnectionClosedError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closed connection passed to scenario.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.ConnectionTypeError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">ConnectionTypeError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dbload/exceptions.html#ConnectionTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.ConnectionTypeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connection object is of wrong type.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.MatchingSqlQueryNotFoundError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">MatchingSqlQueryNotFoundError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dbload/exceptions.html#MatchingSqlQueryNotFoundError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.MatchingSqlQueryNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matching SQL query does not exist.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.NotDecoratedByQueryError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">NotDecoratedByQueryError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dbload/exceptions.html#NotDecoratedByQueryError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.NotDecoratedByQueryError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object must be decorated by query decorator first.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.NotFunctionTypeError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">NotFunctionTypeError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dbload/exceptions.html#NotFunctionTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.NotFunctionTypeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorated object is not a function.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.NotQueryResultTypeError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">NotQueryResultTypeError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dbload/exceptions.html#NotQueryResultTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.NotQueryResultTypeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returned result is not a QueryResult.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.DsnNotFoundError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">DsnNotFoundError</span></code><a class="reference internal" href="../_modules/dbload/exceptions.html#DsnNotFoundError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.DsnNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>DSN connection string is missing from config.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.QueryAlreadyExistsError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">QueryAlreadyExistsError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">registration_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dbload/exceptions.html#QueryAlreadyExistsError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.QueryAlreadyExistsError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempting to register query that already exists.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.ScenarioAlreadyExistsError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">ScenarioAlreadyExistsError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">registration_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dbload/exceptions.html#ScenarioAlreadyExistsError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.ScenarioAlreadyExistsError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempting to register scenario that already exists.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.UnsupportedPredefinedSimulationError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">UnsupportedPredefinedSimulationError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dbload/exceptions.html#UnsupportedPredefinedSimulationError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.UnsupportedPredefinedSimulationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempting to load predefined simulation that does not exit.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.ImportlibResourcesNotFoundError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">ImportlibResourcesNotFoundError</span></code><a class="reference internal" href="../_modules/dbload/exceptions.html#ImportlibResourcesNotFoundError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.ImportlibResourcesNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required module importlib.resources or importlib_resources not found.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.PredefinedSimulationImportError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">PredefinedSimulationImportError</span></code><a class="reference internal" href="../_modules/dbload/exceptions.html#PredefinedSimulationImportError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.PredefinedSimulationImportError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Could not import predefined simulation.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dbload.exceptions.EmptyPathToModuleError">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dbload.exceptions.</span></code><code class="sig-name descname"><span class="pre">EmptyPathToModuleError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dbload/exceptions.html#EmptyPathToModuleError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dbload.exceptions.EmptyPathToModuleError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Empty path to module with scenarios is provided.</p>
+</dd></dl>
+
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="query_parser.html" title="previous page">QueryParser</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.1e043a052b0af929e4d8.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020–2021, Dynatrace LLC.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
