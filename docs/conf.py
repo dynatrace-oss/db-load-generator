@@ -23,7 +23,7 @@ copyright = f"2020–{datetime.now().year}, Dynatrace LLC"
 author = "Vagiz Duseev <vagiz.duseev@dynatrace.com>"
 
 # Short version
-version = "0.8.5"
+version = "0.8.6"
 # The full version, including alpha/beta/rc tags
 release = version
 
